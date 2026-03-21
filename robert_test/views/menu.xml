@@ -1,0 +1,16 @@
+<odoo>
+    <!-- Action -->
+    <record id="action_robert_test" model="ir.actions.act_window">
+        <field name="name">Robert Test</field>
+        <field name="res_model">robert.test</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_robert_test_root" name="Robert Test"/>
+
+    <menuitem id="menu_robert_test"
+              name="Records"
+              parent="menu_robert_test_root"
+              action="action_robert_test"/>
+</odoo>

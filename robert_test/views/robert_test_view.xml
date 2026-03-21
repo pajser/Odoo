@@ -1,0 +1,30 @@
+<odoo>
+    <!-- List view -->
+    <record id="view_robert_test_list" model="ir.ui.view">
+        <field name="name">robert.test.list</field>
+        <field name="model">robert.test</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="number"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="view_robert_test_form" model="ir.ui.view">
+        <field name="name">robert.test.form</field>
+        <field name="model">robert.test</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="number"/>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
