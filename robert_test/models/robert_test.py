@@ -7,3 +7,4 @@ class RobertTest(models.Model):
     name = fields.Char(string="Title", required=True)
     notes = fields.Text(string="Notes")
     number = fields.Integer(string="Number")
+    #test for remote push
