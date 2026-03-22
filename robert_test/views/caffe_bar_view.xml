@@ -1,0 +1,81 @@
+<odoo>
+    <!-- List view -->
+    <record id="n_caffe_bar_view_list" model="ir.ui.view">
+        <field name="name">n.caffe.bar.list</field>
+        <field name="model">n.caffe.bar</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="country_id"/>
+                <field name="rating"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="n_caffe_bar_view_form" model="ir.ui.view">
+        <field name="name">n.caffe.bar.form</field>
+        <field name="model">n.caffe.bar</field>
+        <field name="arch" type="xml">
+            <form  string="Caffe Bar">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="country_id"/>
+                        <field name="rating"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+     <!-- Search View -->
+    <record id="n_caffe_bar_view_search" model="ir.ui.view">
+        <field name="name">robert.test.search</field>
+        <field name="model">n.caffe.bar</field>
+        <field name="arch" type="xml">
+            <search string="Caffe Bars">
+                <field name="name"/>
+                <field name="country_id"/>
+                <filter string="Good" name="good" domain="[('rating', '=', 'good')]"/>
+                <filter string="OK" name="ok" domain="[('rating', '=', 'ok')]"/>
+                <filter string="Bad" name="bad" domain="[('rating', '=', 'bad')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Country" name="group_country" context="{'group_by': 'country_id'}"/>
+                    <filter string="Rating" name="group_rating" context="{'group_by': 'rating'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="n_caffe_bar_action" model="ir.actions.act_window">
+        <field name="name">Caffe Bars</field>
+        <field name="res_model">n.caffe.bar</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="n_caffe_bar_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Caffe Bar!
+            </p>
+        </field>
+    </record>
+
+     <!-- Top-level App Menu (Robert Test Menus) -->
+    <menuitem
+        id="menu_robert_test_root"
+        name="Robert Test Menus"
+        sequence="100"
+        web_icon="robert_test,static/description/icon.png"
+    />
+
+    <!-- Caffe Bars sub-menu -->
+    <menuitem
+        id="menu_caffe_bar"
+        name="Caffe Bars"
+        parent="menu_robert_test_root"
+        action="n_caffe_bar_action"
+        sequence="10"
+    />
+
+</odoo>

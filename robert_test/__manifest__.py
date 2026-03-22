@@ -4,7 +4,7 @@
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
-        'views/robert_test_view.xml',
+        'views/caffe_bar_view.xml',
         'views/menu.xml',
     ],
     'installable': True,

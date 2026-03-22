@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_robert_test,access_robert_test,model_robert_test,,1,1,1,1
+access_caffe_bar,access_caffe_bar,model_n_caffe_bar,,1,1,1,1
