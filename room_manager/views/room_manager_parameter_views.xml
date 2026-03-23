@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="room_manager_parameter_view_list" model="ir.ui.view">
+        <field name="name">room.manager.parameter.view.list</field>
+        <field name="model">room.manager.parameter</field>
+        <field name="arch" type="xml">
+            <list string="Parameters">
+                <field name="id" optional="hide"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="value_type"/>
+                <field name="critical_value_expression"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="room_manager_parameter_view_form" model="ir.ui.view">
+        <field name="name">room.manager.parameter.view.form</field>
+        <field name="model">room.manager.parameter</field>
+        <field name="arch" type="xml">
+            <form string="Parameter">
+                <sheet>
+                    <group>
+                        <group string="General">
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="value_type"/>
+                        </group>
+                        <group string="Critical Value">
+                            <field name="critical_value_expression"
+                                   placeholder="e.g. lambda v: v &gt; 28 or v &lt; 12"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="room_manager_parameter_view_search" model="ir.ui.view">
+        <field name="name">room.manager.parameter.view.search</field>
+        <field name="model">room.manager.parameter</field>
+        <field name="arch" type="xml">
+            <search string="Parameters">
+                <field name="name"/>
+                <filter string="Numeric" name="filter_numeric"
+                        domain="[('value_type', '=', 'numeric')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="room_manager_parameter_action" model="ir.actions.act_window">
+        <field name="name">Parameters</field>
+        <field name="res_model">room.manager.parameter</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

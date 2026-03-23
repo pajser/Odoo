@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Level 1: App root menu (appears on the main home screen) -->
+    <menuitem id="building_management_root_menu"
+              name="Building Management"
+              sequence="10"/>
+    <!-- Level 2: Readings -->
+    <menuitem id="room_manager_menu_readings"
+              name="Readings"
+              parent="building_management_root_menu"
+              sequence="10"/>
+
+    <menuitem id="room_manager_menu_logs"
+              name="Logs"
+              parent="room_manager_menu_readings"
+              action="room_manager_log_action"
+              sequence="10"/>
+
+    <!-- Level 2: Configuration -->
+    <menuitem id="room_manager_menu_config"
+              name="Configuration"
+              parent="building_management_root_menu"
+              sequence="20"/>
+
+    <menuitem id="room_manager_menu_parameters"
+              name="Parameters"
+              parent="room_manager_menu_config"
+              action="room_manager_parameter_action"
+              sequence="10"/>
+
+    <menuitem id="room_manager_menu_resources"
+              name="Resources"
+              parent="room_manager_menu_config"
+              action="room_manager_resource_action"
+              sequence="20"/>
+
+    <menuitem id="room_manager_menu_resource_types"
+              name="Resource Types"
+              parent="room_manager_menu_config"
+              action="room_manager_resource_type_action"
+              sequence="30"/>
+
+</odoo>

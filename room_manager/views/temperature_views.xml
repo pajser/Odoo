@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List View -->
+    <record id="temperature_list" model="ir.ui.view">
+        <field name="name">room.manager.temperature.list</field>
+        <field name="model">temperature</field>
+        <field name="arch" type="xml">
+            <list string="Temperature Records">
+                <field name="value"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="temperature_form" model="ir.ui.view">
+        <field name="name">room.manager.temperature.form</field>
+        <field name="model">temperature</field>
+        <field name="arch" type="xml">
+            <form string="Temperature">
+                <sheet>
+                    <group>
+                        <field name="value"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="temperature_search" model="ir.ui.view">
+        <field name="name">room.manager.temperature.search</field>
+        <field name="model">temperature</field>
+        <field name="arch" type="xml">
+            <search string="Temperature">
+                <field name="value"/>
+                <filter string="Positive Temp" name="positive" domain="[('value', '&gt;', 0)]"/>
+                <filter string="Negative Temp" name="negative" domain="[('value', '&lt;', 0)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="temperature_action" model="ir.actions.act_window">
+        <field name="name">Temperature Records</field>
+        <field name="res_model">temperature</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+<!--    &lt;!&ndash; Level 1: App root menu (appears on the main home screen) &ndash;&gt;-->
+<!--    <menuitem id="building_management_root_menu"-->
+<!--              name="Building Management"-->
+<!--              sequence="10"-->
+<!--             />-->
+
+    <!-- Level 2: "Readings" submenu -->
+    <menuitem id="temperature_menu_readings"
+              name="Readings"
+              parent="building_management_root_menu"
+              sequence="10"/>
+
+    <!-- Level 3: Temperature records under Readings -->
+    <menuitem id="temperature_menu_records"
+              name="Temperature"
+              parent="temperature_menu_readings"
+              action="temperature_action"
+              sequence="10"/>
+
+</odoo>
