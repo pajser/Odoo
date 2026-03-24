@@ -22,6 +22,7 @@
         <field name="model">room.manager.resource</field>
         <field name="arch" type="xml">
             <form string="Resource">
+                <field name="id" invisible="1"/>
                 <sheet>
                     <group>
                         <group string="General">
@@ -31,6 +32,16 @@
                         </group>
                     </group>
                     <notebook>
+                        <page string="Parameters">
+                            <field name="allowed_parameter_ids" context="{'resource_id':id}">
+                                <list>
+                                    <field name="id" optional="hide"/>
+                                    <field name="name"/>
+                                    <button name="action_graph" type="object" string="Graph" />
+                                </list>
+                            </field>
+                        </page>
+
                         <page string="Contains Resources">
                             <field name="contains_resource_ids">
                                 <list>

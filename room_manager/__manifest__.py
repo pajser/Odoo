@@ -11,6 +11,9 @@
         'views/room_manager_log_views.xml',
         'views/room_manager_menus.xml',
         'views/temperature_views.xml',
+
+        'data/test_data.xml',
+        'data/test_logs.xml',
     ],
     'installable': True,
 }

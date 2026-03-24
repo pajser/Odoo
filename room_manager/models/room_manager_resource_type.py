@@ -7,3 +7,8 @@ class RoomManagerResourceType(models.Model):
 
     name = fields.Char("Name", required=True)
     allowed_parameter_ids = fields.Many2many(comodel_name="room.manager.parameter", string="Allowed Parameters")
+    type_class = fields.Selection(selection=[
+        ('sensor', 'Sensor'),
+        ('system', 'System'),
+        ('physical_space', 'Physical space'),
+        ('group', 'Undefined group of Resources'),])

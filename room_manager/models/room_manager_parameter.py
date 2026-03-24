@@ -21,11 +21,25 @@ class RoomManagerParameter(models.Model):
              "Example: lambda v: v > 28 or v < 12"
     )
 
-    def is_critical(self, value):
-        """Evaluate whether the given value is critical based on the expression."""
+
+
+    def action_graph(self):
         self.ensure_one()
-        try:
-            func = eval(self.critical_value_expression)
-            return func(value)
-        except Exception:
-            return False
+        context = self.env.context
+        resource_id = context.get('params', {}).get('resId', False)
+
+        if not resource_id:
+            return
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Log Entries Graph',
+            'res_model': 'room.manager.log',
+            'view_mode': 'graph',
+            'views': [(False, 'graph')],
+            'target': 'new',
+            'domain': [('resource_id', '=', resource_id), ('parameter_id', '=', self.id)],
+            'context': {
+                'group_by': ['create_date'],
+            },
+        }

@@ -1,5 +1,4 @@
-from odoo import models, fields
-
+from odoo import models, fields, api
 
 class RoomManagerLog(models.Model):
     _name = 'room.manager.log'
@@ -23,18 +22,13 @@ class RoomManagerLog(models.Model):
         'room.manager.parameter',
         string="Parameter"
     )
-    parameter_value = fields.Char("Parameter Value")
     message = fields.Char(string="Message")
-    # is_critical = fields.Boolean(
-    #     "Is Critical",
-    #     compute='_compute_is_critical',
-    #     store=True
-    # )
-    #
-    # @api.depends('parameter_id', 'parameter_value')
-    # def _compute_is_critical(self):
-    #     for rec in self:
-    #         if rec.parameter_id:
-    #             rec.is_critical = rec.parameter_id.is_critical(rec.parameter_value)
-    #         else:
-    #             rec.is_critical = False
+    parameter_value = fields.Char("Parameter Value")
+    parameter_value_numeric = fields.Float(compute="_compute_parameter_value_numeric", store=True)
+    timestamp = fields.Datetime()
+
+
+    @api.depends('parameter_value')
+    def _compute_parameter_value_numeric(self):
+        for record in self:
+            record.parameter_value_numeric = float(record.parameter_value) if record.parameter_value.isnumeric() else 0.0

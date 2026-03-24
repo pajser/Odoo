@@ -1,0 +1,2140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ═══════════════════════════════════════════════════════════
+             PARAMETERS
+             Each parameter represents one measurable / observable value
+             that a sensor can report.
+        ═══════════════════════════════════════════════════════════ -->
+
+        <!-- Environmental / HVAC -->
+        <record id="param_temperature" model="room.manager.parameter">
+            <field name="name">Temperature</field>
+            <field name="code">TEMP</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 28 or v &lt; 12</field>
+        </record>
+
+        <record id="param_humidity" model="room.manager.parameter">
+            <field name="name">Relative Humidity</field>
+            <field name="code">HUM</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 70 or v &lt; 25</field>
+        </record>
+
+        <record id="param_co2" model="room.manager.parameter">
+            <field name="name">CO₂ Concentration</field>
+            <field name="code">CO2</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 1200</field>
+        </record>
+
+        <record id="param_tvoc" model="room.manager.parameter">
+            <field name="name">TVOC Index</field>
+            <field name="code">TVOC</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 500</field>
+        </record>
+
+        <record id="param_pm25" model="room.manager.parameter">
+            <field name="name">Particulate Matter PM2.5</field>
+            <field name="code">PM25</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 35</field>
+        </record>
+
+        <record id="param_diff_pressure" model="room.manager.parameter">
+            <field name="name">Differential Pressure</field>
+            <field name="code">DIFF_P</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 250 or v &lt; 10</field>
+        </record>
+
+        <record id="param_air_volume" model="room.manager.parameter">
+            <field name="name">Air Volume Flow</field>
+            <field name="code">AIR_VOL</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v &lt; 50</field>
+        </record>
+
+        <record id="param_duct_temp" model="room.manager.parameter">
+            <field name="name">Duct Temperature</field>
+            <field name="code">DUCT_TEMP</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 40 or v &lt; 8</field>
+        </record>
+
+        <!-- Fire and safety -->
+        <record id="param_smoke" model="room.manager.parameter">
+            <field name="name">Smoke Detected</field>
+            <field name="code">SMOKE</field>
+            <field name="value_type">boolean</field>
+            <field name="critical_value_expression">lambda v: v == True</field>
+        </record>
+
+        <record id="param_heat_alarm" model="room.manager.parameter">
+            <field name="name">Heat Alarm</field>
+            <field name="code">HEAT_ALARM</field>
+            <field name="value_type">boolean</field>
+            <field name="critical_value_expression">lambda v: v == True</field>
+        </record>
+
+        <record id="param_flame" model="room.manager.parameter">
+            <field name="name">Flame Detected</field>
+            <field name="code">FLAME</field>
+            <field name="value_type">boolean</field>
+            <field name="critical_value_expression">lambda v: v == True</field>
+        </record>
+
+        <record id="param_co_gas" model="room.manager.parameter">
+            <field name="name">CO Gas Concentration</field>
+            <field name="code">CO_GAS</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 50</field>
+        </record>
+
+        <record id="param_ch4_gas" model="room.manager.parameter">
+            <field name="name">CH₄ Gas Concentration</field>
+            <field name="code">CH4_GAS</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 1000</field>
+        </record>
+
+        <record id="param_sprinkler_flow" model="room.manager.parameter">
+            <field name="name">Sprinkler Flow Active</field>
+            <field name="code">SPKR_FLOW</field>
+            <field name="value_type">boolean</field>
+            <field name="critical_value_expression">lambda v: v == True</field>
+        </record>
+
+        <record id="param_manual_call" model="room.manager.parameter">
+            <field name="name">Manual Call Point Activated</field>
+            <field name="code">MCP</field>
+            <field name="value_type">boolean</field>
+            <field name="critical_value_expression">lambda v: v == True</field>
+        </record>
+
+        <!-- Electrical and energy -->
+        <record id="param_current" model="room.manager.parameter">
+            <field name="name">Electrical Current</field>
+            <field name="code">CURRENT</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 400</field>
+        </record>
+
+        <record id="param_voltage" model="room.manager.parameter">
+            <field name="name">Voltage</field>
+            <field name="code">VOLTAGE</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 253 or v &lt; 207</field>
+        </record>
+
+        <record id="param_power_kw" model="room.manager.parameter">
+            <field name="name">Active Power</field>
+            <field name="code">POWER_KW</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 500</field>
+        </record>
+
+        <record id="param_energy_kwh" model="room.manager.parameter">
+            <field name="name">Energy Consumption</field>
+            <field name="code">ENERGY_KWH</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: False</field>
+        </record>
+
+        <record id="param_power_factor" model="room.manager.parameter">
+            <field name="name">Power Factor</field>
+            <field name="code">PF</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v &lt; 0.85</field>
+        </record>
+
+        <record id="param_thd" model="room.manager.parameter">
+            <field name="name">Total Harmonic Distortion</field>
+            <field name="code">THD</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 8</field>
+        </record>
+
+        <!-- Security and access -->
+        <record id="param_motion" model="room.manager.parameter">
+            <field name="name">Motion Detected</field>
+            <field name="code">MOTION</field>
+            <field name="value_type">boolean</field>
+            <field name="critical_value_expression">lambda v: False</field>
+        </record>
+
+        <record id="param_door_state" model="room.manager.parameter">
+            <field name="name">Door State</field>
+            <field name="code">DOOR</field>
+            <field name="value_type">boolean</field>
+            <field name="critical_value_expression">lambda v: False</field>
+        </record>
+
+        <record id="param_access_event" model="room.manager.parameter">
+            <field name="name">Access Control Event</field>
+            <field name="code">ACCESS</field>
+            <field name="value_type">boolean</field>
+            <field name="critical_value_expression">lambda v: False</field>
+        </record>
+
+        <!-- Occupancy -->
+        <record id="param_people_count" model="room.manager.parameter">
+            <field name="name">People Count</field>
+            <field name="code">PPL_CNT</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: False</field>
+        </record>
+
+        <record id="param_occupancy" model="room.manager.parameter">
+            <field name="name">Occupancy State</field>
+            <field name="code">OCC</field>
+            <field name="value_type">boolean</field>
+            <field name="critical_value_expression">lambda v: False</field>
+        </record>
+
+        <record id="param_lux" model="room.manager.parameter">
+            <field name="name">Illuminance</field>
+            <field name="code">LUX</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v &lt; 200</field>
+        </record>
+
+        <!-- Mechanical plant -->
+        <record id="param_vibration" model="room.manager.parameter">
+            <field name="name">Vibration Velocity</field>
+            <field name="code">VIB</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 4.5</field>
+        </record>
+
+        <record id="param_rpm" model="room.manager.parameter">
+            <field name="name">Rotational Speed</field>
+            <field name="code">RPM</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 3200 or v &lt; 100</field>
+        </record>
+
+        <record id="param_pipe_temp" model="room.manager.parameter">
+            <field name="name">Pipe Temperature</field>
+            <field name="code">PIPE_TEMP</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 85 or v &lt; 4</field>
+        </record>
+
+        <record id="param_water_pressure" model="room.manager.parameter">
+            <field name="name">Water Pressure</field>
+            <field name="code">WATER_P</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 10 or v &lt; 1</field>
+        </record>
+
+        <record id="param_water_flow" model="room.manager.parameter">
+            <field name="name">Water Flow Rate</field>
+            <field name="code">WATER_FLOW</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 100</field>
+        </record>
+
+        <!-- Structural -->
+        <record id="param_strain" model="room.manager.parameter">
+            <field name="name">Structural Strain</field>
+            <field name="code">STRAIN</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: abs(v) > 500</field>
+        </record>
+
+        <record id="param_tilt" model="room.manager.parameter">
+            <field name="name">Tilt Angle</field>
+            <field name="code">TILT</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: abs(v) > 0.5</field>
+        </record>
+
+        <record id="param_water_leak" model="room.manager.parameter">
+            <field name="name">Water Leak Detected</field>
+            <field name="code">LEAK</field>
+            <field name="value_type">boolean</field>
+            <field name="critical_value_expression">lambda v: v == True</field>
+        </record>
+
+        <record id="param_wind_speed" model="room.manager.parameter">
+            <field name="name">Wind Speed</field>
+            <field name="code">WIND</field>
+            <field name="value_type">numeric</field>
+            <field name="critical_value_expression">lambda v: v > 20</field>
+        </record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════
+             RESOURCE TYPES
+             type_class determines the role: sensor | system |
+             physical_space | group
+        ═══════════════════════════════════════════════════════════ -->
+
+        <!-- ── Physical space types ── -->
+        <record id="rt_building" model="room.manager.resource.type">
+            <field name="name">Building</field>
+            <field name="type_class">physical_space</field>
+            <field name="allowed_parameter_ids" eval="[]"/>
+        </record>
+
+        <record id="rt_floor" model="room.manager.resource.type">
+            <field name="name">Floor</field>
+            <field name="type_class">physical_space</field>
+            <field name="allowed_parameter_ids" eval="[]"/>
+        </record>
+
+        <record id="rt_lobby" model="room.manager.resource.type">
+            <field name="name">Lobby / Reception</field>
+            <field name="type_class">physical_space</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_temperature')),
+                (4, ref('param_co2')),
+                (4, ref('param_humidity')),
+                (4, ref('param_people_count')),
+                (4, ref('param_motion')),
+                (4, ref('param_lux')),
+            ]"/>
+        </record>
+
+        <record id="rt_office" model="room.manager.resource.type">
+            <field name="name">Open Office</field>
+            <field name="type_class">physical_space</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_temperature')),
+                (4, ref('param_co2')),
+                (4, ref('param_humidity')),
+                (4, ref('param_tvoc')),
+                (4, ref('param_pm25')),
+                (4, ref('param_occupancy')),
+                (4, ref('param_lux')),
+            ]"/>
+        </record>
+
+        <record id="rt_meeting_room" model="room.manager.resource.type">
+            <field name="name">Meeting Room</field>
+            <field name="type_class">physical_space</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_temperature')),
+                (4, ref('param_co2')),
+                (4, ref('param_humidity')),
+                (4, ref('param_people_count')),
+                (4, ref('param_occupancy')),
+                (4, ref('param_lux')),
+            ]"/>
+        </record>
+
+        <record id="rt_corridor" model="room.manager.resource.type">
+            <field name="name">Corridor</field>
+            <field name="type_class">physical_space</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_motion')),
+                (4, ref('param_lux')),
+                (4, ref('param_smoke')),
+            ]"/>
+        </record>
+
+        <record id="rt_stairwell" model="room.manager.resource.type">
+            <field name="name">Stairwell</field>
+            <field name="type_class">physical_space</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_motion')),
+                (4, ref('param_smoke')),
+                (4, ref('param_door_state')),
+            ]"/>
+        </record>
+
+        <record id="rt_toilet" model="room.manager.resource.type">
+            <field name="name">Toilet / WC</field>
+            <field name="type_class">physical_space</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_motion')),
+                (4, ref('param_water_flow')),
+                (4, ref('param_water_leak')),
+            ]"/>
+        </record>
+
+        <record id="rt_server_room" model="room.manager.resource.type">
+            <field name="name">Server Room / IDF</field>
+            <field name="type_class">physical_space</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_temperature')),
+                (4, ref('param_humidity')),
+                (4, ref('param_water_leak')),
+                (4, ref('param_smoke')),
+                (4, ref('param_power_kw')),
+                (4, ref('param_energy_kwh')),
+            ]"/>
+        </record>
+
+        <record id="rt_electrical_room" model="room.manager.resource.type">
+            <field name="name">Electrical / Switchroom</field>
+            <field name="type_class">physical_space</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_temperature')),
+                (4, ref('param_humidity')),
+                (4, ref('param_smoke')),
+            ]"/>
+        </record>
+
+        <record id="rt_plant_room" model="room.manager.resource.type">
+            <field name="name">Plant Room</field>
+            <field name="type_class">physical_space</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_temperature')),
+                (4, ref('param_co_gas')),
+                (4, ref('param_water_leak')),
+                (4, ref('param_smoke')),
+            ]"/>
+        </record>
+
+        <record id="rt_roof" model="room.manager.resource.type">
+            <field name="name">Roof / Roof Plant Area</field>
+            <field name="type_class">physical_space</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_temperature')),
+                (4, ref('param_wind_speed')),
+                (4, ref('param_tilt')),
+            ]"/>
+        </record>
+
+        <record id="rt_basement" model="room.manager.resource.type">
+            <field name="name">Basement</field>
+            <field name="type_class">physical_space</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_co_gas')),
+                (4, ref('param_water_leak')),
+                (4, ref('param_smoke')),
+            ]"/>
+        </record>
+
+        <record id="rt_parking" model="room.manager.resource.type">
+            <field name="name">Car Park</field>
+            <field name="type_class">physical_space</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_co_gas')),
+                (4, ref('param_smoke')),
+                (4, ref('param_motion')),
+            ]"/>
+        </record>
+
+        <!-- ── System types ── -->
+        <record id="rt_bms" model="room.manager.resource.type">
+            <field name="name">Building Management System (BMS)</field>
+            <field name="type_class">system</field>
+            <field name="allowed_parameter_ids" eval="[]"/>
+        </record>
+
+        <record id="rt_hvac_system" model="room.manager.resource.type">
+            <field name="name">HVAC System</field>
+            <field name="type_class">system</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_duct_temp')),
+                (4, ref('param_diff_pressure')),
+                (4, ref('param_air_volume')),
+                (4, ref('param_temperature')),
+                (4, ref('param_humidity')),
+                (4, ref('param_co2')),
+            ]"/>
+        </record>
+
+        <record id="rt_fire_system" model="room.manager.resource.type">
+            <field name="name">Fire Detection System</field>
+            <field name="type_class">system</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_smoke')),
+                (4, ref('param_heat_alarm')),
+                (4, ref('param_flame')),
+                (4, ref('param_manual_call')),
+                (4, ref('param_sprinkler_flow')),
+            ]"/>
+        </record>
+
+        <record id="rt_security_system" model="room.manager.resource.type">
+            <field name="name">Security System</field>
+            <field name="type_class">system</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_motion')),
+                (4, ref('param_door_state')),
+                (4, ref('param_access_event')),
+            ]"/>
+        </record>
+
+        <record id="rt_electrical_system" model="room.manager.resource.type">
+            <field name="name">Electrical System</field>
+            <field name="type_class">system</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_current')),
+                (4, ref('param_voltage')),
+                (4, ref('param_power_kw')),
+                (4, ref('param_energy_kwh')),
+                (4, ref('param_power_factor')),
+                (4, ref('param_thd')),
+            ]"/>
+        </record>
+
+        <record id="rt_occupancy_system" model="room.manager.resource.type">
+            <field name="name">Occupancy Management System</field>
+            <field name="type_class">system</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_people_count')),
+                (4, ref('param_occupancy')),
+            ]"/>
+        </record>
+
+        <record id="rt_structural_system" model="room.manager.resource.type">
+            <field name="name">Structural Monitoring System</field>
+            <field name="type_class">system</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_strain')),
+                (4, ref('param_tilt')),
+                (4, ref('param_vibration')),
+            ]"/>
+        </record>
+
+        <record id="rt_water_system" model="room.manager.resource.type">
+            <field name="name">Water / Plumbing System</field>
+            <field name="type_class">system</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_water_flow')),
+                (4, ref('param_water_pressure')),
+                (4, ref('param_pipe_temp')),
+                (4, ref('param_water_leak')),
+            ]"/>
+        </record>
+
+        <record id="rt_mechanical_system" model="room.manager.resource.type">
+            <field name="name">Mechanical Plant System</field>
+            <field name="type_class">system</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_vibration')),
+                (4, ref('param_rpm')),
+                (4, ref('param_pipe_temp')),
+                (4, ref('param_water_pressure')),
+                (4, ref('param_diff_pressure')),
+            ]"/>
+        </record>
+
+        <!-- ── Sensor types ── -->
+        <record id="rt_sensor_temp_hum" model="room.manager.resource.type">
+            <field name="name">Temperature &amp; Humidity Sensor</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_temperature')),
+                (4, ref('param_humidity')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_co2" model="room.manager.resource.type">
+            <field name="name">CO₂ Sensor</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_co2')),
+                (4, ref('param_temperature')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_iaq" model="room.manager.resource.type">
+            <field name="name">Indoor Air Quality Sensor (IAQ)</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_tvoc')),
+                (4, ref('param_pm25')),
+                (4, ref('param_co2')),
+                (4, ref('param_temperature')),
+                (4, ref('param_humidity')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_diff_pressure" model="room.manager.resource.type">
+            <field name="name">Differential Pressure Sensor</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_diff_pressure')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_air_volume" model="room.manager.resource.type">
+            <field name="name">Air Volume Sensor (VAV)</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_air_volume')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_duct_temp" model="room.manager.resource.type">
+            <field name="name">Duct Temperature Sensor</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_duct_temp')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_smoke" model="room.manager.resource.type">
+            <field name="name">Smoke Detector</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_smoke')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_heat" model="room.manager.resource.type">
+            <field name="name">Heat Detector</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_heat_alarm')),
+                (4, ref('param_temperature')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_flame" model="room.manager.resource.type">
+            <field name="name">Flame Detector</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_flame')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_gas_co" model="room.manager.resource.type">
+            <field name="name">Gas Detector (CO / CH₄)</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_co_gas')),
+                (4, ref('param_ch4_gas')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_mcp" model="room.manager.resource.type">
+            <field name="name">Manual Call Point</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_manual_call')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_sprinkler_flow" model="room.manager.resource.type">
+            <field name="name">Sprinkler Flow Switch</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_sprinkler_flow')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_power_meter" model="room.manager.resource.type">
+            <field name="name">Power Meter (PMU)</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_current')),
+                (4, ref('param_voltage')),
+                (4, ref('param_power_kw')),
+                (4, ref('param_energy_kwh')),
+                (4, ref('param_power_factor')),
+                (4, ref('param_thd')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_ct" model="room.manager.resource.type">
+            <field name="name">Current Transformer (CT)</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_current')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_pir" model="room.manager.resource.type">
+            <field name="name">PIR Motion Detector</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_motion')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_door_contact" model="room.manager.resource.type">
+            <field name="name">Door / Window Contact</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_door_state')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_card_reader" model="room.manager.resource.type">
+            <field name="name">Access Card Reader</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_access_event')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_tof_counter" model="room.manager.resource.type">
+            <field name="name">ToF People Counter</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_people_count')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_desk_occ" model="room.manager.resource.type">
+            <field name="name">Desk Occupancy Sensor</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_occupancy')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_lux" model="room.manager.resource.type">
+            <field name="name">Lux / Light Sensor</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_lux')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_vibration" model="room.manager.resource.type">
+            <field name="name">Vibration Sensor</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_vibration')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_speed" model="room.manager.resource.type">
+            <field name="name">Speed / Tachometer Sensor</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_rpm')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_pipe_temp" model="room.manager.resource.type">
+            <field name="name">Pipe Temperature Sensor</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_pipe_temp')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_water_pressure" model="room.manager.resource.type">
+            <field name="name">Water Pressure Sensor</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_water_pressure')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_water_flow" model="room.manager.resource.type">
+            <field name="name">Water Flow Meter</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_water_flow')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_water_leak" model="room.manager.resource.type">
+            <field name="name">Water Leak Detector</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_water_leak')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_strain" model="room.manager.resource.type">
+            <field name="name">Strain Gauge (SHM)</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_strain')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_tilt" model="room.manager.resource.type">
+            <field name="name">Tilt Sensor / Inclinometer</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_tilt')),
+            ]"/>
+        </record>
+
+        <record id="rt_sensor_weather" model="room.manager.resource.type">
+            <field name="name">Weather Station</field>
+            <field name="type_class">sensor</field>
+            <field name="allowed_parameter_ids" eval="[
+                (4, ref('param_wind_speed')),
+                (4, ref('param_temperature')),
+            ]"/>
+        </record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════
+             RESOURCES — TOP-LEVEL BUILDING
+        ═══════════════════════════════════════════════════════════ -->
+
+        <record id="res_building" model="room.manager.resource">
+            <field name="name">Meridian Office Tower</field>
+            <field name="type_id" ref="rt_building"/>
+        </record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════
+             BUILDING-LEVEL SYSTEMS
+        ═══════════════════════════════════════════════════════════ -->
+
+        <record id="res_bms" model="room.manager.resource">
+            <field name="name">BMS — Meridian Tower</field>
+            <field name="type_id" ref="rt_bms"/>
+            <field name="contains_resource_ids" eval="[]"/>
+        </record>
+
+        <!-- HVAC -->
+        <record id="res_hvac_building" model="room.manager.resource">
+            <field name="name">HVAC System — Building</field>
+            <field name="type_id" ref="rt_hvac_system"/>
+        </record>
+
+        <!-- Fire -->
+        <record id="res_fire_building" model="room.manager.resource">
+            <field name="name">Fire Detection System — Building</field>
+            <field name="type_id" ref="rt_fire_system"/>
+        </record>
+
+        <!-- Security -->
+        <record id="res_security_building" model="room.manager.resource">
+            <field name="name">Security System — Building</field>
+            <field name="type_id" ref="rt_security_system"/>
+        </record>
+
+        <!-- Electrical -->
+        <record id="res_electrical_building" model="room.manager.resource">
+            <field name="name">Electrical System — Building</field>
+            <field name="type_id" ref="rt_electrical_system"/>
+        </record>
+
+        <!-- Occupancy -->
+        <record id="res_occupancy_building" model="room.manager.resource">
+            <field name="name">Occupancy Management — Building</field>
+            <field name="type_id" ref="rt_occupancy_system"/>
+        </record>
+
+        <!-- Structural -->
+        <record id="res_structural_building" model="room.manager.resource">
+            <field name="name">Structural Monitoring — Building</field>
+            <field name="type_id" ref="rt_structural_system"/>
+        </record>
+
+        <!-- Water -->
+        <record id="res_water_building" model="room.manager.resource">
+            <field name="name">Water / Plumbing System — Building</field>
+            <field name="type_id" ref="rt_water_system"/>
+        </record>
+
+        <!-- Mechanical plant -->
+        <record id="res_mechanical_building" model="room.manager.resource">
+            <field name="name">Mechanical Plant System — Building</field>
+            <field name="type_id" ref="rt_mechanical_system"/>
+        </record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════
+             BASEMENT (B1)
+        ═══════════════════════════════════════════════════════════ -->
+
+        <record id="res_floor_b1" model="room.manager.resource">
+            <field name="name">Basement B1</field>
+            <field name="type_id" ref="rt_basement"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_building'))]"/>
+        </record>
+
+        <!-- Basement plant room -->
+        <record id="res_b1_plant_room" model="room.manager.resource">
+            <field name="name">B1 — Chiller / Boiler Plant Room</field>
+            <field name="type_id" ref="rt_plant_room"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_b1'))]"/>
+        </record>
+
+        <record id="res_b1_electrical_room" model="room.manager.resource">
+            <field name="name">B1 — Main Electrical Switchroom</field>
+            <field name="type_id" ref="rt_electrical_room"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_b1'))]"/>
+        </record>
+
+        <record id="res_b1_parking" model="room.manager.resource">
+            <field name="name">B1 — Car Park Level 1</field>
+            <field name="type_id" ref="rt_parking"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_b1'))]"/>
+        </record>
+
+        <!-- B1 — HVAC system zone -->
+        <record id="res_hvac_b1" model="room.manager.resource">
+            <field name="name">HVAC Zone — B1</field>
+            <field name="type_id" ref="rt_hvac_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_building'))]"/>
+        </record>
+
+        <!-- B1 — Fire system zone -->
+        <record id="res_fire_b1" model="room.manager.resource">
+            <field name="name">Fire System — B1</field>
+            <field name="type_id" ref="rt_fire_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_fire_building'))]"/>
+        </record>
+
+        <!-- B1 sensors — plant room -->
+        <record id="res_b1_plant_temp_hum" model="room.manager.resource">
+            <field name="name">B1-Plant — Temp &amp; Humidity Sensor</field>
+            <field name="type_id" ref="rt_sensor_temp_hum"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_plant_room')),(4, ref('res_hvac_b1'))]"/>
+        </record>
+
+        <record id="res_b1_plant_smoke" model="room.manager.resource">
+            <field name="name">B1-Plant — Smoke Detector</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_plant_room')),(4, ref('res_fire_b1'))]"/>
+        </record>
+
+        <record id="res_b1_plant_heat" model="room.manager.resource">
+            <field name="name">B1-Plant — Heat Detector</field>
+            <field name="type_id" ref="rt_sensor_heat"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_plant_room')),(4, ref('res_fire_b1'))]"/>
+        </record>
+
+        <record id="res_b1_plant_leak" model="room.manager.resource">
+            <field name="name">B1-Plant — Water Leak Detector</field>
+            <field name="type_id" ref="rt_sensor_water_leak"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_plant_room')),(4, ref('res_water_building'))]"/>
+        </record>
+
+        <record id="res_b1_chiller_vibration" model="room.manager.resource">
+            <field name="name">B1-Chiller — Vibration Sensor</field>
+            <field name="type_id" ref="rt_sensor_vibration"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_plant_room')),(4, ref('res_mechanical_building'))]"/>
+        </record>
+
+        <record id="res_b1_chiller_pipe_temp_supply" model="room.manager.resource">
+            <field name="name">B1-Chiller — Pipe Temp Sensor (Supply)</field>
+            <field name="type_id" ref="rt_sensor_pipe_temp"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_plant_room')),(4, ref('res_mechanical_building'))]"/>
+        </record>
+
+        <record id="res_b1_chiller_pipe_temp_return" model="room.manager.resource">
+            <field name="name">B1-Chiller — Pipe Temp Sensor (Return)</field>
+            <field name="type_id" ref="rt_sensor_pipe_temp"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_plant_room')),(4, ref('res_mechanical_building'))]"/>
+        </record>
+
+        <record id="res_b1_chiller_flow" model="room.manager.resource">
+            <field name="name">B1-Chiller — Water Flow Meter</field>
+            <field name="type_id" ref="rt_sensor_water_flow"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_plant_room')),(4, ref('res_water_building'))]"/>
+        </record>
+
+        <record id="res_b1_pump_speed" model="room.manager.resource">
+            <field name="name">B1-Pump — Speed Sensor</field>
+            <field name="type_id" ref="rt_sensor_speed"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_plant_room')),(4, ref('res_mechanical_building'))]"/>
+        </record>
+
+        <record id="res_b1_plant_gas" model="room.manager.resource">
+            <field name="name">B1-Plant — Gas Detector (CO/CH₄)</field>
+            <field name="type_id" ref="rt_sensor_gas_co"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_plant_room')),(4, ref('res_fire_b1'))]"/>
+        </record>
+
+        <record id="res_b1_plant_mcp" model="room.manager.resource">
+            <field name="name">B1-Plant — Manual Call Point</field>
+            <field name="type_id" ref="rt_sensor_mcp"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_plant_room')),(4, ref('res_fire_b1'))]"/>
+        </record>
+
+        <!-- B1 sensors — electrical room -->
+        <record id="res_b1_elec_power_meter" model="room.manager.resource">
+            <field name="name">B1-Elec — Main Power Meter</field>
+            <field name="type_id" ref="rt_sensor_power_meter"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_electrical_room')),(4, ref('res_electrical_building'))]"/>
+        </record>
+
+        <record id="res_b1_elec_temp_hum" model="room.manager.resource">
+            <field name="name">B1-Elec — Temp &amp; Humidity Sensor</field>
+            <field name="type_id" ref="rt_sensor_temp_hum"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_electrical_room')),(4, ref('res_hvac_b1'))]"/>
+        </record>
+
+        <record id="res_b1_elec_smoke" model="room.manager.resource">
+            <field name="name">B1-Elec — Smoke Detector</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_electrical_room')),(4, ref('res_fire_b1'))]"/>
+        </record>
+
+        <!-- B1 sensors — car park -->
+        <record id="res_b1_park_gas_1" model="room.manager.resource">
+            <field name="name">B1-Park — Gas Detector Zone 1</field>
+            <field name="type_id" ref="rt_sensor_gas_co"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_parking')),(4, ref('res_fire_b1'))]"/>
+        </record>
+
+        <record id="res_b1_park_gas_2" model="room.manager.resource">
+            <field name="name">B1-Park — Gas Detector Zone 2</field>
+            <field name="type_id" ref="rt_sensor_gas_co"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_parking')),(4, ref('res_fire_b1'))]"/>
+        </record>
+
+        <record id="res_b1_park_smoke" model="room.manager.resource">
+            <field name="name">B1-Park — Smoke Detector</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_parking')),(4, ref('res_fire_b1'))]"/>
+        </record>
+
+        <record id="res_b1_park_pir" model="room.manager.resource">
+            <field name="name">B1-Park — PIR Motion Detector</field>
+            <field name="type_id" ref="rt_sensor_pir"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_b1_parking')),(4, ref('res_security_building'))]"/>
+        </record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════
+             GROUND FLOOR (Floor 0 — Lobby)
+        ═══════════════════════════════════════════════════════════ -->
+
+        <record id="res_floor_0" model="room.manager.resource">
+            <field name="name">Ground Floor (Floor 0)</field>
+            <field name="type_id" ref="rt_floor"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_building'))]"/>
+        </record>
+
+        <record id="res_f0_lobby" model="room.manager.resource">
+            <field name="name">F0 — Main Lobby</field>
+            <field name="type_id" ref="rt_lobby"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_0'))]"/>
+        </record>
+
+        <record id="res_f0_reception" model="room.manager.resource">
+            <field name="name">F0 — Reception / Atrium</field>
+            <field name="type_id" ref="rt_lobby"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_0'))]"/>
+        </record>
+
+        <record id="res_f0_corridor" model="room.manager.resource">
+            <field name="name">F0 — Corridor</field>
+            <field name="type_id" ref="rt_corridor"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_0'))]"/>
+        </record>
+
+        <record id="res_f0_stairwell_a" model="room.manager.resource">
+            <field name="name">F0 — Stairwell A</field>
+            <field name="type_id" ref="rt_stairwell"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_0'))]"/>
+        </record>
+
+        <record id="res_f0_stairwell_b" model="room.manager.resource">
+            <field name="name">F0 — Stairwell B</field>
+            <field name="type_id" ref="rt_stairwell"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_0'))]"/>
+        </record>
+
+        <!-- F0 floor-level systems -->
+        <record id="res_hvac_f0" model="room.manager.resource">
+            <field name="name">HVAC Zone — Floor 0</field>
+            <field name="type_id" ref="rt_hvac_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_building'))]"/>
+        </record>
+
+        <record id="res_fire_f0" model="room.manager.resource">
+            <field name="name">Fire System — Floor 0</field>
+            <field name="type_id" ref="rt_fire_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_fire_building'))]"/>
+        </record>
+
+        <record id="res_security_f0" model="room.manager.resource">
+            <field name="name">Security System — Floor 0</field>
+            <field name="type_id" ref="rt_security_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_security_building'))]"/>
+        </record>
+
+        <record id="res_occupancy_f0" model="room.manager.resource">
+            <field name="name">Occupancy System — Floor 0</field>
+            <field name="type_id" ref="rt_occupancy_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_occupancy_building'))]"/>
+        </record>
+
+        <!-- F0 sensors — lobby -->
+        <record id="res_f0_lobby_tof" model="room.manager.resource">
+            <field name="name">F0-Lobby — ToF People Counter (Main Entrance)</field>
+            <field name="type_id" ref="rt_sensor_tof_counter"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_lobby')),(4, ref('res_occupancy_f0'))]"/>
+        </record>
+
+        <record id="res_f0_lobby_card" model="room.manager.resource">
+            <field name="name">F0-Lobby — Access Card Reader (Main Entrance)</field>
+            <field name="type_id" ref="rt_sensor_card_reader"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_lobby')),(4, ref('res_security_f0'))]"/>
+        </record>
+
+        <record id="res_f0_lobby_temp_hum" model="room.manager.resource">
+            <field name="name">F0-Lobby — Temp &amp; Humidity Sensor</field>
+            <field name="type_id" ref="rt_sensor_temp_hum"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_lobby')),(4, ref('res_hvac_f0'))]"/>
+        </record>
+
+        <record id="res_f0_lobby_co2" model="room.manager.resource">
+            <field name="name">F0-Lobby — CO₂ Sensor</field>
+            <field name="type_id" ref="rt_sensor_co2"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_lobby')),(4, ref('res_hvac_f0'))]"/>
+        </record>
+
+        <record id="res_f0_lobby_smoke_1" model="room.manager.resource">
+            <field name="name">F0-Lobby — Smoke Detector 1</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_lobby')),(4, ref('res_fire_f0'))]"/>
+        </record>
+
+        <record id="res_f0_lobby_smoke_2" model="room.manager.resource">
+            <field name="name">F0-Lobby — Smoke Detector 2</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_lobby')),(4, ref('res_fire_f0'))]"/>
+        </record>
+
+        <record id="res_f0_lobby_mcp" model="room.manager.resource">
+            <field name="name">F0-Lobby — Manual Call Point</field>
+            <field name="type_id" ref="rt_sensor_mcp"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_lobby')),(4, ref('res_fire_f0'))]"/>
+        </record>
+
+        <record id="res_f0_lobby_pir" model="room.manager.resource">
+            <field name="name">F0-Lobby — PIR Motion Detector</field>
+            <field name="type_id" ref="rt_sensor_pir"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_lobby')),(4, ref('res_security_f0'))]"/>
+        </record>
+
+        <record id="res_f0_lobby_lux" model="room.manager.resource">
+            <field name="name">F0-Lobby — Lux Sensor</field>
+            <field name="type_id" ref="rt_sensor_lux"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_lobby')),(4, ref('res_occupancy_f0'))]"/>
+        </record>
+
+        <!-- F0 corridor sensors -->
+        <record id="res_f0_corridor_pir" model="room.manager.resource">
+            <field name="name">F0-Corridor — PIR Motion Detector</field>
+            <field name="type_id" ref="rt_sensor_pir"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_corridor')),(4, ref('res_security_f0'))]"/>
+        </record>
+
+        <record id="res_f0_corridor_smoke" model="room.manager.resource">
+            <field name="name">F0-Corridor — Smoke Detector</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_corridor')),(4, ref('res_fire_f0'))]"/>
+        </record>
+
+        <record id="res_f0_stairA_smoke" model="room.manager.resource">
+            <field name="name">F0-Stairwell A — Smoke Detector</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_stairwell_a')),(4, ref('res_fire_f0'))]"/>
+        </record>
+
+        <record id="res_f0_stairA_door" model="room.manager.resource">
+            <field name="name">F0-Stairwell A — Door Contact</field>
+            <field name="type_id" ref="rt_sensor_door_contact"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_stairwell_a')),(4, ref('res_security_f0'))]"/>
+        </record>
+
+        <record id="res_f0_stairB_smoke" model="room.manager.resource">
+            <field name="name">F0-Stairwell B — Smoke Detector</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_stairwell_b')),(4, ref('res_fire_f0'))]"/>
+        </record>
+
+        <record id="res_f0_stairB_door" model="room.manager.resource">
+            <field name="name">F0-Stairwell B — Door Contact</field>
+            <field name="type_id" ref="rt_sensor_door_contact"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f0_stairwell_b')),(4, ref('res_security_f0'))]"/>
+        </record>
+
+        <!-- F0 AHU duct sensors -->
+        <record id="res_f0_ahu_duct_temp" model="room.manager.resource">
+            <field name="name">F0-AHU — Duct Temp Sensor (Supply)</field>
+            <field name="type_id" ref="rt_sensor_duct_temp"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f0'))]"/>
+        </record>
+
+        <record id="res_f0_ahu_diff_pressure" model="room.manager.resource">
+            <field name="name">F0-AHU — Differential Pressure Sensor (Filter)</field>
+            <field name="type_id" ref="rt_sensor_diff_pressure"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f0'))]"/>
+        </record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════
+             FLOORS 1–10  (typical office floor pattern)
+             For each floor we create:
+               • Floor physical space
+               • 2 × open office zones
+               • 2 × meeting rooms
+               • 1 × corridor
+               • 1 × toilet (WC)
+               • 1 × server/comms room (every 5th floor gets full IDF)
+               • Floor-level HVAC, fire, security, electrical, occupancy sub-systems
+               • All sensors for each space and system
+        ═══════════════════════════════════════════════════════════ -->
+
+        <!-- ──────────────────────────────────────────────────────────
+             FLOOR 1
+        ────────────────────────────────────────────────────────── -->
+        <record id="res_floor_1" model="room.manager.resource">
+            <field name="name">Floor 1</field>
+            <field name="type_id" ref="rt_floor"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_building'))]"/>
+        </record>
+
+        <!-- Floor 1 spaces -->
+        <record id="res_f1_office_a" model="room.manager.resource">
+            <field name="name">F1 — Open Office Zone A</field>
+            <field name="type_id" ref="rt_office"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_1'))]"/>
+        </record>
+        <record id="res_f1_office_b" model="room.manager.resource">
+            <field name="name">F1 — Open Office Zone B</field>
+            <field name="type_id" ref="rt_office"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_1'))]"/>
+        </record>
+        <record id="res_f1_meeting_1" model="room.manager.resource">
+            <field name="name">F1 — Meeting Room 1</field>
+            <field name="type_id" ref="rt_meeting_room"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_1'))]"/>
+        </record>
+        <record id="res_f1_meeting_2" model="room.manager.resource">
+            <field name="name">F1 — Meeting Room 2</field>
+            <field name="type_id" ref="rt_meeting_room"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_1'))]"/>
+        </record>
+        <record id="res_f1_corridor" model="room.manager.resource">
+            <field name="name">F1 — Corridor</field>
+            <field name="type_id" ref="rt_corridor"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_1'))]"/>
+        </record>
+        <record id="res_f1_toilet" model="room.manager.resource">
+            <field name="name">F1 — Toilets</field>
+            <field name="type_id" ref="rt_toilet"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_1'))]"/>
+        </record>
+        <record id="res_f1_stairwell_a" model="room.manager.resource">
+            <field name="name">F1 — Stairwell A</field>
+            <field name="type_id" ref="rt_stairwell"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_1'))]"/>
+        </record>
+        <record id="res_f1_stairwell_b" model="room.manager.resource">
+            <field name="name">F1 — Stairwell B</field>
+            <field name="type_id" ref="rt_stairwell"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_1'))]"/>
+        </record>
+
+        <!-- Floor 1 sub-systems -->
+        <record id="res_hvac_f1" model="room.manager.resource">
+            <field name="name">HVAC Zone — Floor 1</field>
+            <field name="type_id" ref="rt_hvac_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_building'))]"/>
+        </record>
+        <record id="res_fire_f1" model="room.manager.resource">
+            <field name="name">Fire System — Floor 1</field>
+            <field name="type_id" ref="rt_fire_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_fire_building'))]"/>
+        </record>
+        <record id="res_security_f1" model="room.manager.resource">
+            <field name="name">Security System — Floor 1</field>
+            <field name="type_id" ref="rt_security_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_security_building'))]"/>
+        </record>
+        <record id="res_electrical_f1" model="room.manager.resource">
+            <field name="name">Electrical Panel — Floor 1</field>
+            <field name="type_id" ref="rt_electrical_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_building'))]"/>
+        </record>
+        <record id="res_occupancy_f1" model="room.manager.resource">
+            <field name="name">Occupancy System — Floor 1</field>
+            <field name="type_id" ref="rt_occupancy_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_occupancy_building'))]"/>
+        </record>
+
+        <!-- F1 AHU sensors -->
+        <record id="res_f1_ahu_duct_temp" model="room.manager.resource">
+            <field name="name">F1-AHU — Duct Temp Sensor</field>
+            <field name="type_id" ref="rt_sensor_duct_temp"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f1'))]"/>
+        </record>
+        <record id="res_f1_ahu_diff_p" model="room.manager.resource">
+            <field name="name">F1-AHU — Differential Pressure Sensor</field>
+            <field name="type_id" ref="rt_sensor_diff_pressure"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f1'))]"/>
+        </record>
+        <record id="res_f1_ahu_air_vol" model="room.manager.resource">
+            <field name="name">F1-AHU — Air Volume Sensor</field>
+            <field name="type_id" ref="rt_sensor_air_volume"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f1'))]"/>
+        </record>
+
+        <!-- F1 Office A sensors -->
+        <record id="res_f1_offA_iaq" model="room.manager.resource">
+            <field name="name">F1-OfficeA — IAQ Sensor</field>
+            <field name="type_id" ref="rt_sensor_iaq"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_a')),(4, ref('res_hvac_f1'))]"/>
+        </record>
+        <record id="res_f1_offA_smoke_1" model="room.manager.resource">
+            <field name="name">F1-OfficeA — Smoke Detector 1</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_a')),(4, ref('res_fire_f1'))]"/>
+        </record>
+        <record id="res_f1_offA_smoke_2" model="room.manager.resource">
+            <field name="name">F1-OfficeA — Smoke Detector 2</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_a')),(4, ref('res_fire_f1'))]"/>
+        </record>
+        <record id="res_f1_offA_pir" model="room.manager.resource">
+            <field name="name">F1-OfficeA — PIR Motion Detector</field>
+            <field name="type_id" ref="rt_sensor_pir"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_a')),(4, ref('res_security_f1'))]"/>
+        </record>
+        <record id="res_f1_offA_desk_1" model="room.manager.resource">
+            <field name="name">F1-OfficeA — Desk Occupancy Sensor 1</field>
+            <field name="type_id" ref="rt_sensor_desk_occ"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_a')),(4, ref('res_occupancy_f1'))]"/>
+        </record>
+        <record id="res_f1_offA_desk_2" model="room.manager.resource">
+            <field name="name">F1-OfficeA — Desk Occupancy Sensor 2</field>
+            <field name="type_id" ref="rt_sensor_desk_occ"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_a')),(4, ref('res_occupancy_f1'))]"/>
+        </record>
+        <record id="res_f1_offA_lux" model="room.manager.resource">
+            <field name="name">F1-OfficeA — Lux Sensor</field>
+            <field name="type_id" ref="rt_sensor_lux"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_a')),(4, ref('res_occupancy_f1'))]"/>
+        </record>
+        <record id="res_f1_offA_mcp" model="room.manager.resource">
+            <field name="name">F1-OfficeA — Manual Call Point</field>
+            <field name="type_id" ref="rt_sensor_mcp"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_a')),(4, ref('res_fire_f1'))]"/>
+        </record>
+
+        <!-- F1 Office B sensors -->
+        <record id="res_f1_offB_iaq" model="room.manager.resource">
+            <field name="name">F1-OfficeB — IAQ Sensor</field>
+            <field name="type_id" ref="rt_sensor_iaq"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_b')),(4, ref('res_hvac_f1'))]"/>
+        </record>
+        <record id="res_f1_offB_smoke_1" model="room.manager.resource">
+            <field name="name">F1-OfficeB — Smoke Detector 1</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_b')),(4, ref('res_fire_f1'))]"/>
+        </record>
+        <record id="res_f1_offB_smoke_2" model="room.manager.resource">
+            <field name="name">F1-OfficeB — Smoke Detector 2</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_b')),(4, ref('res_fire_f1'))]"/>
+        </record>
+        <record id="res_f1_offB_pir" model="room.manager.resource">
+            <field name="name">F1-OfficeB — PIR Motion Detector</field>
+            <field name="type_id" ref="rt_sensor_pir"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_b')),(4, ref('res_security_f1'))]"/>
+        </record>
+        <record id="res_f1_offB_desk_1" model="room.manager.resource">
+            <field name="name">F1-OfficeB — Desk Occupancy Sensor 1</field>
+            <field name="type_id" ref="rt_sensor_desk_occ"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_b')),(4, ref('res_occupancy_f1'))]"/>
+        </record>
+        <record id="res_f1_offB_desk_2" model="room.manager.resource">
+            <field name="name">F1-OfficeB — Desk Occupancy Sensor 2</field>
+            <field name="type_id" ref="rt_sensor_desk_occ"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_b')),(4, ref('res_occupancy_f1'))]"/>
+        </record>
+        <record id="res_f1_offB_lux" model="room.manager.resource">
+            <field name="name">F1-OfficeB — Lux Sensor</field>
+            <field name="type_id" ref="rt_sensor_lux"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_b')),(4, ref('res_occupancy_f1'))]"/>
+        </record>
+        <record id="res_f1_offB_mcp" model="room.manager.resource">
+            <field name="name">F1-OfficeB — Manual Call Point</field>
+            <field name="type_id" ref="rt_sensor_mcp"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_office_b')),(4, ref('res_fire_f1'))]"/>
+        </record>
+
+        <!-- F1 Meeting rooms sensors -->
+        <record id="res_f1_meet1_co2" model="room.manager.resource">
+            <field name="name">F1-Meeting1 — CO₂ Sensor</field>
+            <field name="type_id" ref="rt_sensor_co2"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_meeting_1')),(4, ref('res_hvac_f1'))]"/>
+        </record>
+        <record id="res_f1_meet1_temp_hum" model="room.manager.resource">
+            <field name="name">F1-Meeting1 — Temp &amp; Humidity Sensor</field>
+            <field name="type_id" ref="rt_sensor_temp_hum"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_meeting_1')),(4, ref('res_hvac_f1'))]"/>
+        </record>
+        <record id="res_f1_meet1_tof" model="room.manager.resource">
+            <field name="name">F1-Meeting1 — ToF People Counter</field>
+            <field name="type_id" ref="rt_sensor_tof_counter"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_meeting_1')),(4, ref('res_occupancy_f1'))]"/>
+        </record>
+        <record id="res_f1_meet1_card" model="room.manager.resource">
+            <field name="name">F1-Meeting1 — Card Reader</field>
+            <field name="type_id" ref="rt_sensor_card_reader"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_meeting_1')),(4, ref('res_security_f1'))]"/>
+        </record>
+        <record id="res_f1_meet1_smoke" model="room.manager.resource">
+            <field name="name">F1-Meeting1 — Smoke Detector</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_meeting_1')),(4, ref('res_fire_f1'))]"/>
+        </record>
+
+        <record id="res_f1_meet2_co2" model="room.manager.resource">
+            <field name="name">F1-Meeting2 — CO₂ Sensor</field>
+            <field name="type_id" ref="rt_sensor_co2"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_meeting_2')),(4, ref('res_hvac_f1'))]"/>
+        </record>
+        <record id="res_f1_meet2_temp_hum" model="room.manager.resource">
+            <field name="name">F1-Meeting2 — Temp &amp; Humidity Sensor</field>
+            <field name="type_id" ref="rt_sensor_temp_hum"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_meeting_2')),(4, ref('res_hvac_f1'))]"/>
+        </record>
+        <record id="res_f1_meet2_tof" model="room.manager.resource">
+            <field name="name">F1-Meeting2 — ToF People Counter</field>
+            <field name="type_id" ref="rt_sensor_tof_counter"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_meeting_2')),(4, ref('res_occupancy_f1'))]"/>
+        </record>
+        <record id="res_f1_meet2_smoke" model="room.manager.resource">
+            <field name="name">F1-Meeting2 — Smoke Detector</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_meeting_2')),(4, ref('res_fire_f1'))]"/>
+        </record>
+
+        <!-- F1 Corridor / stairwell sensors -->
+        <record id="res_f1_corr_pir" model="room.manager.resource">
+            <field name="name">F1-Corridor — PIR Motion Detector</field>
+            <field name="type_id" ref="rt_sensor_pir"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_corridor')),(4, ref('res_security_f1'))]"/>
+        </record>
+        <record id="res_f1_corr_smoke" model="room.manager.resource">
+            <field name="name">F1-Corridor — Smoke Detector</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_corridor')),(4, ref('res_fire_f1'))]"/>
+        </record>
+        <record id="res_f1_corr_mcp" model="room.manager.resource">
+            <field name="name">F1-Corridor — Manual Call Point</field>
+            <field name="type_id" ref="rt_sensor_mcp"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_corridor')),(4, ref('res_fire_f1'))]"/>
+        </record>
+        <record id="res_f1_stairA_smoke" model="room.manager.resource">
+            <field name="name">F1-StairA — Smoke Detector</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_stairwell_a')),(4, ref('res_fire_f1'))]"/>
+        </record>
+        <record id="res_f1_stairA_door" model="room.manager.resource">
+            <field name="name">F1-StairA — Door Contact</field>
+            <field name="type_id" ref="rt_sensor_door_contact"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_stairwell_a')),(4, ref('res_security_f1'))]"/>
+        </record>
+        <record id="res_f1_stairB_smoke" model="room.manager.resource">
+            <field name="name">F1-StairB — Smoke Detector</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_stairwell_b')),(4, ref('res_fire_f1'))]"/>
+        </record>
+        <record id="res_f1_stairB_door" model="room.manager.resource">
+            <field name="name">F1-StairB — Door Contact</field>
+            <field name="type_id" ref="rt_sensor_door_contact"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_stairwell_b')),(4, ref('res_security_f1'))]"/>
+        </record>
+
+        <!-- F1 Toilets sensors -->
+        <record id="res_f1_toilet_pir" model="room.manager.resource">
+            <field name="name">F1-Toilet — PIR Motion Detector</field>
+            <field name="type_id" ref="rt_sensor_pir"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_toilet')),(4, ref('res_security_f1'))]"/>
+        </record>
+        <record id="res_f1_toilet_leak" model="room.manager.resource">
+            <field name="name">F1-Toilet — Water Leak Detector</field>
+            <field name="type_id" ref="rt_sensor_water_leak"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_toilet')),(4, ref('res_water_building'))]"/>
+        </record>
+        <record id="res_f1_toilet_flow" model="room.manager.resource">
+            <field name="name">F1-Toilet — Water Flow Meter</field>
+            <field name="type_id" ref="rt_sensor_water_flow"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f1_toilet')),(4, ref('res_water_building'))]"/>
+        </record>
+
+        <!-- F1 Electrical panel -->
+        <record id="res_f1_elec_power_meter" model="room.manager.resource">
+            <field name="name">F1 — Floor Power Meter</field>
+            <field name="type_id" ref="rt_sensor_power_meter"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_f1')),(4, ref('res_electrical_building'))]"/>
+        </record>
+        <record id="res_f1_elec_ct_hvac" model="room.manager.resource">
+            <field name="name">F1 — CT HVAC Circuit</field>
+            <field name="type_id" ref="rt_sensor_ct"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_f1'))]"/>
+        </record>
+        <record id="res_f1_elec_ct_lighting" model="room.manager.resource">
+            <field name="name">F1 — CT Lighting Circuit</field>
+            <field name="type_id" ref="rt_sensor_ct"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_f1'))]"/>
+        </record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════
+             FLOORS 2–9  (abbreviated, same sensor pattern as F1)
+             Each floor gets: physical spaces, floor-level systems,
+             and the full sensor set. Sensors reference both the room
+             and the floor-level system they belong to.
+        ═══════════════════════════════════════════════════════════ -->
+
+        <!-- Macro-like repetition for floors 2–9 using the same pattern.
+             Floor 5 gets an IDF / server room. Floor 10 is the top
+             occupied floor and is covered after floor 9. -->
+
+        <!-- FLOOR 2 -->
+        <record id="res_floor_2" model="room.manager.resource">
+            <field name="name">Floor 2</field>
+            <field name="type_id" ref="rt_floor"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_building'))]"/>
+        </record>
+        <record id="res_f2_office_a" model="room.manager.resource"><field name="name">F2 — Open Office Zone A</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_2'))]"/></record>
+        <record id="res_f2_office_b" model="room.manager.resource"><field name="name">F2 — Open Office Zone B</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_2'))]"/></record>
+        <record id="res_f2_meeting_1" model="room.manager.resource"><field name="name">F2 — Meeting Room 1</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_2'))]"/></record>
+        <record id="res_f2_meeting_2" model="room.manager.resource"><field name="name">F2 — Meeting Room 2</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_2'))]"/></record>
+        <record id="res_f2_corridor" model="room.manager.resource"><field name="name">F2 — Corridor</field><field name="type_id" ref="rt_corridor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_2'))]"/></record>
+        <record id="res_f2_toilet" model="room.manager.resource"><field name="name">F2 — Toilets</field><field name="type_id" ref="rt_toilet"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_2'))]"/></record>
+        <record id="res_f2_stairwell_a" model="room.manager.resource"><field name="name">F2 — Stairwell A</field><field name="type_id" ref="rt_stairwell"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_2'))]"/></record>
+        <record id="res_f2_stairwell_b" model="room.manager.resource"><field name="name">F2 — Stairwell B</field><field name="type_id" ref="rt_stairwell"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_2'))]"/></record>
+        <record id="res_hvac_f2" model="room.manager.resource"><field name="name">HVAC Zone — Floor 2</field><field name="type_id" ref="rt_hvac_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_building'))]"/></record>
+        <record id="res_fire_f2" model="room.manager.resource"><field name="name">Fire System — Floor 2</field><field name="type_id" ref="rt_fire_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_fire_building'))]"/></record>
+        <record id="res_security_f2" model="room.manager.resource"><field name="name">Security System — Floor 2</field><field name="type_id" ref="rt_security_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_security_building'))]"/></record>
+        <record id="res_electrical_f2" model="room.manager.resource"><field name="name">Electrical Panel — Floor 2</field><field name="type_id" ref="rt_electrical_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_building'))]"/></record>
+        <record id="res_occupancy_f2" model="room.manager.resource"><field name="name">Occupancy System — Floor 2</field><field name="type_id" ref="rt_occupancy_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_occupancy_building'))]"/></record>
+        <record id="res_f2_ahu_duct_temp" model="room.manager.resource"><field name="name">F2-AHU — Duct Temp Sensor</field><field name="type_id" ref="rt_sensor_duct_temp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f2'))]"/></record>
+        <record id="res_f2_ahu_diff_p" model="room.manager.resource"><field name="name">F2-AHU — Differential Pressure Sensor</field><field name="type_id" ref="rt_sensor_diff_pressure"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f2'))]"/></record>
+        <record id="res_f2_ahu_air_vol" model="room.manager.resource"><field name="name">F2-AHU — Air Volume Sensor</field><field name="type_id" ref="rt_sensor_air_volume"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f2'))]"/></record>
+        <record id="res_f2_offA_iaq" model="room.manager.resource"><field name="name">F2-OfficeA — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_a')),(4, ref('res_hvac_f2'))]"/></record>
+        <record id="res_f2_offA_smoke_1" model="room.manager.resource"><field name="name">F2-OfficeA — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_a')),(4, ref('res_fire_f2'))]"/></record>
+        <record id="res_f2_offA_smoke_2" model="room.manager.resource"><field name="name">F2-OfficeA — Smoke Detector 2</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_a')),(4, ref('res_fire_f2'))]"/></record>
+        <record id="res_f2_offA_pir" model="room.manager.resource"><field name="name">F2-OfficeA — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_a')),(4, ref('res_security_f2'))]"/></record>
+        <record id="res_f2_offA_desk_1" model="room.manager.resource"><field name="name">F2-OfficeA — Desk Occupancy Sensor 1</field><field name="type_id" ref="rt_sensor_desk_occ"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_a')),(4, ref('res_occupancy_f2'))]"/></record>
+        <record id="res_f2_offA_desk_2" model="room.manager.resource"><field name="name">F2-OfficeA — Desk Occupancy Sensor 2</field><field name="type_id" ref="rt_sensor_desk_occ"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_a')),(4, ref('res_occupancy_f2'))]"/></record>
+        <record id="res_f2_offA_lux" model="room.manager.resource"><field name="name">F2-OfficeA — Lux Sensor</field><field name="type_id" ref="rt_sensor_lux"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_a')),(4, ref('res_occupancy_f2'))]"/></record>
+        <record id="res_f2_offA_mcp" model="room.manager.resource"><field name="name">F2-OfficeA — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_a')),(4, ref('res_fire_f2'))]"/></record>
+        <record id="res_f2_offB_iaq" model="room.manager.resource"><field name="name">F2-OfficeB — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_b')),(4, ref('res_hvac_f2'))]"/></record>
+        <record id="res_f2_offB_smoke_1" model="room.manager.resource"><field name="name">F2-OfficeB — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_b')),(4, ref('res_fire_f2'))]"/></record>
+        <record id="res_f2_offB_smoke_2" model="room.manager.resource"><field name="name">F2-OfficeB — Smoke Detector 2</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_b')),(4, ref('res_fire_f2'))]"/></record>
+        <record id="res_f2_offB_pir" model="room.manager.resource"><field name="name">F2-OfficeB — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_b')),(4, ref('res_security_f2'))]"/></record>
+        <record id="res_f2_offB_desk_1" model="room.manager.resource"><field name="name">F2-OfficeB — Desk Occupancy Sensor 1</field><field name="type_id" ref="rt_sensor_desk_occ"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_b')),(4, ref('res_occupancy_f2'))]"/></record>
+        <record id="res_f2_offB_desk_2" model="room.manager.resource"><field name="name">F2-OfficeB — Desk Occupancy Sensor 2</field><field name="type_id" ref="rt_sensor_desk_occ"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_b')),(4, ref('res_occupancy_f2'))]"/></record>
+        <record id="res_f2_offB_lux" model="room.manager.resource"><field name="name">F2-OfficeB — Lux Sensor</field><field name="type_id" ref="rt_sensor_lux"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_b')),(4, ref('res_occupancy_f2'))]"/></record>
+        <record id="res_f2_offB_mcp" model="room.manager.resource"><field name="name">F2-OfficeB — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_office_b')),(4, ref('res_fire_f2'))]"/></record>
+        <record id="res_f2_meet1_co2" model="room.manager.resource"><field name="name">F2-Meeting1 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_meeting_1')),(4, ref('res_hvac_f2'))]"/></record>
+        <record id="res_f2_meet1_temp_hum" model="room.manager.resource"><field name="name">F2-Meeting1 — Temp &amp; Humidity Sensor</field><field name="type_id" ref="rt_sensor_temp_hum"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_meeting_1')),(4, ref('res_hvac_f2'))]"/></record>
+        <record id="res_f2_meet1_tof" model="room.manager.resource"><field name="name">F2-Meeting1 — ToF People Counter</field><field name="type_id" ref="rt_sensor_tof_counter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_meeting_1')),(4, ref('res_occupancy_f2'))]"/></record>
+        <record id="res_f2_meet1_card" model="room.manager.resource"><field name="name">F2-Meeting1 — Card Reader</field><field name="type_id" ref="rt_sensor_card_reader"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_meeting_1')),(4, ref('res_security_f2'))]"/></record>
+        <record id="res_f2_meet1_smoke" model="room.manager.resource"><field name="name">F2-Meeting1 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_meeting_1')),(4, ref('res_fire_f2'))]"/></record>
+        <record id="res_f2_meet2_co2" model="room.manager.resource"><field name="name">F2-Meeting2 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_meeting_2')),(4, ref('res_hvac_f2'))]"/></record>
+        <record id="res_f2_meet2_temp_hum" model="room.manager.resource"><field name="name">F2-Meeting2 — Temp &amp; Humidity Sensor</field><field name="type_id" ref="rt_sensor_temp_hum"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_meeting_2')),(4, ref('res_hvac_f2'))]"/></record>
+        <record id="res_f2_meet2_smoke" model="room.manager.resource"><field name="name">F2-Meeting2 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_meeting_2')),(4, ref('res_fire_f2'))]"/></record>
+        <record id="res_f2_corr_pir" model="room.manager.resource"><field name="name">F2-Corridor — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_corridor')),(4, ref('res_security_f2'))]"/></record>
+        <record id="res_f2_corr_smoke" model="room.manager.resource"><field name="name">F2-Corridor — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_corridor')),(4, ref('res_fire_f2'))]"/></record>
+        <record id="res_f2_corr_mcp" model="room.manager.resource"><field name="name">F2-Corridor — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_corridor')),(4, ref('res_fire_f2'))]"/></record>
+        <record id="res_f2_stairA_smoke" model="room.manager.resource"><field name="name">F2-StairA — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_stairwell_a')),(4, ref('res_fire_f2'))]"/></record>
+        <record id="res_f2_stairA_door" model="room.manager.resource"><field name="name">F2-StairA — Door Contact</field><field name="type_id" ref="rt_sensor_door_contact"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_stairwell_a')),(4, ref('res_security_f2'))]"/></record>
+        <record id="res_f2_stairB_smoke" model="room.manager.resource"><field name="name">F2-StairB — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_stairwell_b')),(4, ref('res_fire_f2'))]"/></record>
+        <record id="res_f2_stairB_door" model="room.manager.resource"><field name="name">F2-StairB — Door Contact</field><field name="type_id" ref="rt_sensor_door_contact"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_stairwell_b')),(4, ref('res_security_f2'))]"/></record>
+        <record id="res_f2_toilet_pir" model="room.manager.resource"><field name="name">F2-Toilet — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_toilet')),(4, ref('res_security_f2'))]"/></record>
+        <record id="res_f2_toilet_leak" model="room.manager.resource"><field name="name">F2-Toilet — Water Leak Detector</field><field name="type_id" ref="rt_sensor_water_leak"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f2_toilet')),(4, ref('res_water_building'))]"/></record>
+        <record id="res_f2_elec_power_meter" model="room.manager.resource"><field name="name">F2 — Floor Power Meter</field><field name="type_id" ref="rt_sensor_power_meter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_f2'))]"/></record>
+
+
+        <!-- FLOORS 3 and 4 follow the same pattern; abbreviated for conciseness -->
+        <!-- FLOOR 3 -->
+        <record id="res_floor_3" model="room.manager.resource"><field name="name">Floor 3</field><field name="type_id" ref="rt_floor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_building'))]"/></record>
+        <record id="res_f3_office_a" model="room.manager.resource"><field name="name">F3 — Open Office Zone A</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_3'))]"/></record>
+        <record id="res_f3_office_b" model="room.manager.resource"><field name="name">F3 — Open Office Zone B</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_3'))]"/></record>
+        <record id="res_f3_meeting_1" model="room.manager.resource"><field name="name">F3 — Meeting Room 1</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_3'))]"/></record>
+        <record id="res_f3_meeting_2" model="room.manager.resource"><field name="name">F3 — Meeting Room 2</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_3'))]"/></record>
+        <record id="res_f3_corridor" model="room.manager.resource"><field name="name">F3 — Corridor</field><field name="type_id" ref="rt_corridor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_3'))]"/></record>
+        <record id="res_f3_toilet" model="room.manager.resource"><field name="name">F3 — Toilets</field><field name="type_id" ref="rt_toilet"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_3'))]"/></record>
+        <record id="res_f3_stairwell_a" model="room.manager.resource"><field name="name">F3 — Stairwell A</field><field name="type_id" ref="rt_stairwell"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_3'))]"/></record>
+        <record id="res_f3_stairwell_b" model="room.manager.resource"><field name="name">F3 — Stairwell B</field><field name="type_id" ref="rt_stairwell"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_3'))]"/></record>
+        <record id="res_hvac_f3" model="room.manager.resource"><field name="name">HVAC Zone — Floor 3</field><field name="type_id" ref="rt_hvac_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_building'))]"/></record>
+        <record id="res_fire_f3" model="room.manager.resource"><field name="name">Fire System — Floor 3</field><field name="type_id" ref="rt_fire_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_fire_building'))]"/></record>
+        <record id="res_security_f3" model="room.manager.resource"><field name="name">Security System — Floor 3</field><field name="type_id" ref="rt_security_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_security_building'))]"/></record>
+        <record id="res_electrical_f3" model="room.manager.resource"><field name="name">Electrical Panel — Floor 3</field><field name="type_id" ref="rt_electrical_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_building'))]"/></record>
+        <record id="res_occupancy_f3" model="room.manager.resource"><field name="name">Occupancy System — Floor 3</field><field name="type_id" ref="rt_occupancy_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_occupancy_building'))]"/></record>
+        <record id="res_f3_offA_iaq" model="room.manager.resource"><field name="name">F3-OfficeA — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_office_a')),(4, ref('res_hvac_f3'))]"/></record>
+        <record id="res_f3_offA_smoke_1" model="room.manager.resource"><field name="name">F3-OfficeA — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_office_a')),(4, ref('res_fire_f3'))]"/></record>
+        <record id="res_f3_offA_smoke_2" model="room.manager.resource"><field name="name">F3-OfficeA — Smoke Detector 2</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_office_a')),(4, ref('res_fire_f3'))]"/></record>
+        <record id="res_f3_offA_pir" model="room.manager.resource"><field name="name">F3-OfficeA — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_office_a')),(4, ref('res_security_f3'))]"/></record>
+        <record id="res_f3_offA_desk_1" model="room.manager.resource"><field name="name">F3-OfficeA — Desk Occupancy Sensor 1</field><field name="type_id" ref="rt_sensor_desk_occ"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_office_a')),(4, ref('res_occupancy_f3'))]"/></record>
+        <record id="res_f3_offA_lux" model="room.manager.resource"><field name="name">F3-OfficeA — Lux Sensor</field><field name="type_id" ref="rt_sensor_lux"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_office_a')),(4, ref('res_occupancy_f3'))]"/></record>
+        <record id="res_f3_offA_mcp" model="room.manager.resource"><field name="name">F3-OfficeA — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_office_a')),(4, ref('res_fire_f3'))]"/></record>
+        <record id="res_f3_offB_iaq" model="room.manager.resource"><field name="name">F3-OfficeB — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_office_b')),(4, ref('res_hvac_f3'))]"/></record>
+        <record id="res_f3_offB_smoke_1" model="room.manager.resource"><field name="name">F3-OfficeB — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_office_b')),(4, ref('res_fire_f3'))]"/></record>
+        <record id="res_f3_offB_pir" model="room.manager.resource"><field name="name">F3-OfficeB — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_office_b')),(4, ref('res_security_f3'))]"/></record>
+        <record id="res_f3_meet1_co2" model="room.manager.resource"><field name="name">F3-Meeting1 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_meeting_1')),(4, ref('res_hvac_f3'))]"/></record>
+        <record id="res_f3_meet1_temp_hum" model="room.manager.resource"><field name="name">F3-Meeting1 — Temp &amp; Humidity Sensor</field><field name="type_id" ref="rt_sensor_temp_hum"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_meeting_1')),(4, ref('res_hvac_f3'))]"/></record>
+        <record id="res_f3_meet1_tof" model="room.manager.resource"><field name="name">F3-Meeting1 — ToF People Counter</field><field name="type_id" ref="rt_sensor_tof_counter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_meeting_1')),(4, ref('res_occupancy_f3'))]"/></record>
+        <record id="res_f3_meet1_smoke" model="room.manager.resource"><field name="name">F3-Meeting1 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_meeting_1')),(4, ref('res_fire_f3'))]"/></record>
+        <record id="res_f3_meet2_co2" model="room.manager.resource"><field name="name">F3-Meeting2 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_meeting_2')),(4, ref('res_hvac_f3'))]"/></record>
+        <record id="res_f3_meet2_smoke" model="room.manager.resource"><field name="name">F3-Meeting2 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_meeting_2')),(4, ref('res_fire_f3'))]"/></record>
+        <record id="res_f3_corr_pir" model="room.manager.resource"><field name="name">F3-Corridor — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_corridor')),(4, ref('res_security_f3'))]"/></record>
+        <record id="res_f3_corr_smoke" model="room.manager.resource"><field name="name">F3-Corridor — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_corridor')),(4, ref('res_fire_f3'))]"/></record>
+        <record id="res_f3_corr_mcp" model="room.manager.resource"><field name="name">F3-Corridor — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_corridor')),(4, ref('res_fire_f3'))]"/></record>
+        <record id="res_f3_stairA_smoke" model="room.manager.resource"><field name="name">F3-StairA — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_stairwell_a')),(4, ref('res_fire_f3'))]"/></record>
+        <record id="res_f3_stairA_door" model="room.manager.resource"><field name="name">F3-StairA — Door Contact</field><field name="type_id" ref="rt_sensor_door_contact"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_stairwell_a')),(4, ref('res_security_f3'))]"/></record>
+        <record id="res_f3_toilet_leak" model="room.manager.resource"><field name="name">F3-Toilet — Water Leak Detector</field><field name="type_id" ref="rt_sensor_water_leak"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f3_toilet')),(4, ref('res_water_building'))]"/></record>
+        <record id="res_f3_elec_power_meter" model="room.manager.resource"><field name="name">F3 — Floor Power Meter</field><field name="type_id" ref="rt_sensor_power_meter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_f3'))]"/></record>
+        <record id="res_f3_ahu_duct_temp" model="room.manager.resource"><field name="name">F3-AHU — Duct Temp Sensor</field><field name="type_id" ref="rt_sensor_duct_temp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f3'))]"/></record>
+        <record id="res_f3_ahu_diff_p" model="room.manager.resource"><field name="name">F3-AHU — Differential Pressure Sensor</field><field name="type_id" ref="rt_sensor_diff_pressure"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f3'))]"/></record>
+
+        <!-- FLOOR 4 -->
+        <record id="res_floor_4" model="room.manager.resource"><field name="name">Floor 4</field><field name="type_id" ref="rt_floor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_building'))]"/></record>
+        <record id="res_f4_office_a" model="room.manager.resource"><field name="name">F4 — Open Office Zone A</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_4'))]"/></record>
+        <record id="res_f4_office_b" model="room.manager.resource"><field name="name">F4 — Open Office Zone B</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_4'))]"/></record>
+        <record id="res_f4_meeting_1" model="room.manager.resource"><field name="name">F4 — Meeting Room 1</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_4'))]"/></record>
+        <record id="res_f4_meeting_2" model="room.manager.resource"><field name="name">F4 — Meeting Room 2</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_4'))]"/></record>
+        <record id="res_f4_corridor" model="room.manager.resource"><field name="name">F4 — Corridor</field><field name="type_id" ref="rt_corridor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_4'))]"/></record>
+        <record id="res_f4_toilet" model="room.manager.resource"><field name="name">F4 — Toilets</field><field name="type_id" ref="rt_toilet"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_4'))]"/></record>
+        <record id="res_f4_stairwell_a" model="room.manager.resource"><field name="name">F4 — Stairwell A</field><field name="type_id" ref="rt_stairwell"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_4'))]"/></record>
+        <record id="res_hvac_f4" model="room.manager.resource"><field name="name">HVAC Zone — Floor 4</field><field name="type_id" ref="rt_hvac_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_building'))]"/></record>
+        <record id="res_fire_f4" model="room.manager.resource"><field name="name">Fire System — Floor 4</field><field name="type_id" ref="rt_fire_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_fire_building'))]"/></record>
+        <record id="res_security_f4" model="room.manager.resource"><field name="name">Security System — Floor 4</field><field name="type_id" ref="rt_security_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_security_building'))]"/></record>
+        <record id="res_electrical_f4" model="room.manager.resource"><field name="name">Electrical Panel — Floor 4</field><field name="type_id" ref="rt_electrical_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_building'))]"/></record>
+        <record id="res_occupancy_f4" model="room.manager.resource"><field name="name">Occupancy System — Floor 4</field><field name="type_id" ref="rt_occupancy_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_occupancy_building'))]"/></record>
+        <record id="res_f4_offA_iaq" model="room.manager.resource"><field name="name">F4-OfficeA — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_office_a')),(4, ref('res_hvac_f4'))]"/></record>
+        <record id="res_f4_offA_smoke_1" model="room.manager.resource"><field name="name">F4-OfficeA — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_office_a')),(4, ref('res_fire_f4'))]"/></record>
+        <record id="res_f4_offA_smoke_2" model="room.manager.resource"><field name="name">F4-OfficeA — Smoke Detector 2</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_office_a')),(4, ref('res_fire_f4'))]"/></record>
+        <record id="res_f4_offA_pir" model="room.manager.resource"><field name="name">F4-OfficeA — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_office_a')),(4, ref('res_security_f4'))]"/></record>
+        <record id="res_f4_offA_desk_1" model="room.manager.resource"><field name="name">F4-OfficeA — Desk Occupancy Sensor 1</field><field name="type_id" ref="rt_sensor_desk_occ"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_office_a')),(4, ref('res_occupancy_f4'))]"/></record>
+        <record id="res_f4_offA_lux" model="room.manager.resource"><field name="name">F4-OfficeA — Lux Sensor</field><field name="type_id" ref="rt_sensor_lux"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_office_a')),(4, ref('res_occupancy_f4'))]"/></record>
+        <record id="res_f4_offA_mcp" model="room.manager.resource"><field name="name">F4-OfficeA — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_office_a')),(4, ref('res_fire_f4'))]"/></record>
+        <record id="res_f4_offB_iaq" model="room.manager.resource"><field name="name">F4-OfficeB — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_office_b')),(4, ref('res_hvac_f4'))]"/></record>
+        <record id="res_f4_offB_smoke_1" model="room.manager.resource"><field name="name">F4-OfficeB — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_office_b')),(4, ref('res_fire_f4'))]"/></record>
+        <record id="res_f4_offB_pir" model="room.manager.resource"><field name="name">F4-OfficeB — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_office_b')),(4, ref('res_security_f4'))]"/></record>
+        <record id="res_f4_meet1_co2" model="room.manager.resource"><field name="name">F4-Meeting1 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_meeting_1')),(4, ref('res_hvac_f4'))]"/></record>
+        <record id="res_f4_meet1_temp_hum" model="room.manager.resource"><field name="name">F4-Meeting1 — Temp &amp; Humidity Sensor</field><field name="type_id" ref="rt_sensor_temp_hum"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_meeting_1')),(4, ref('res_hvac_f4'))]"/></record>
+        <record id="res_f4_meet1_tof" model="room.manager.resource"><field name="name">F4-Meeting1 — ToF People Counter</field><field name="type_id" ref="rt_sensor_tof_counter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_meeting_1')),(4, ref('res_occupancy_f4'))]"/></record>
+        <record id="res_f4_meet1_smoke" model="room.manager.resource"><field name="name">F4-Meeting1 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_meeting_1')),(4, ref('res_fire_f4'))]"/></record>
+        <record id="res_f4_meet2_co2" model="room.manager.resource"><field name="name">F4-Meeting2 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_meeting_2')),(4, ref('res_hvac_f4'))]"/></record>
+        <record id="res_f4_meet2_smoke" model="room.manager.resource"><field name="name">F4-Meeting2 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_meeting_2')),(4, ref('res_fire_f4'))]"/></record>
+        <record id="res_f4_corr_pir" model="room.manager.resource"><field name="name">F4-Corridor — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_corridor')),(4, ref('res_security_f4'))]"/></record>
+        <record id="res_f4_corr_smoke" model="room.manager.resource"><field name="name">F4-Corridor — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_corridor')),(4, ref('res_fire_f4'))]"/></record>
+        <record id="res_f4_corr_mcp" model="room.manager.resource"><field name="name">F4-Corridor — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_corridor')),(4, ref('res_fire_f4'))]"/></record>
+        <record id="res_f4_stairA_smoke" model="room.manager.resource"><field name="name">F4-StairA — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_stairwell_a')),(4, ref('res_fire_f4'))]"/></record>
+        <record id="res_f4_stairA_door" model="room.manager.resource"><field name="name">F4-StairA — Door Contact</field><field name="type_id" ref="rt_sensor_door_contact"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_stairwell_a')),(4, ref('res_security_f4'))]"/></record>
+        <record id="res_f4_toilet_leak" model="room.manager.resource"><field name="name">F4-Toilet — Water Leak Detector</field><field name="type_id" ref="rt_sensor_water_leak"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f4_toilet')),(4, ref('res_water_building'))]"/></record>
+        <record id="res_f4_elec_power_meter" model="room.manager.resource"><field name="name">F4 — Floor Power Meter</field><field name="type_id" ref="rt_sensor_power_meter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_f4'))]"/></record>
+        <record id="res_f4_ahu_duct_temp" model="room.manager.resource"><field name="name">F4-AHU — Duct Temp Sensor</field><field name="type_id" ref="rt_sensor_duct_temp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f4'))]"/></record>
+        <record id="res_f4_ahu_diff_p" model="room.manager.resource"><field name="name">F4-AHU — Differential Pressure Sensor</field><field name="type_id" ref="rt_sensor_diff_pressure"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f4'))]"/></record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════
+             FLOOR 5  — mid-building IDF / server room floor
+        ═══════════════════════════════════════════════════════════ -->
+        <record id="res_floor_5" model="room.manager.resource"><field name="name">Floor 5</field><field name="type_id" ref="rt_floor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_building'))]"/></record>
+        <record id="res_f5_office_a" model="room.manager.resource"><field name="name">F5 — Open Office Zone A</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_5'))]"/></record>
+        <record id="res_f5_office_b" model="room.manager.resource"><field name="name">F5 — Open Office Zone B</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_5'))]"/></record>
+        <record id="res_f5_meeting_1" model="room.manager.resource"><field name="name">F5 — Meeting Room 1</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_5'))]"/></record>
+        <record id="res_f5_meeting_2" model="room.manager.resource"><field name="name">F5 — Meeting Room 2</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_5'))]"/></record>
+        <record id="res_f5_corridor" model="room.manager.resource"><field name="name">F5 — Corridor</field><field name="type_id" ref="rt_corridor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_5'))]"/></record>
+        <record id="res_f5_toilet" model="room.manager.resource"><field name="name">F5 — Toilets</field><field name="type_id" ref="rt_toilet"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_5'))]"/></record>
+        <record id="res_f5_stairwell_a" model="room.manager.resource"><field name="name">F5 — Stairwell A</field><field name="type_id" ref="rt_stairwell"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_5'))]"/></record>
+        <!-- IDF on floor 5 -->
+        <record id="res_f5_idf" model="room.manager.resource">
+            <field name="name">F5 — IDF / Server Room</field>
+            <field name="type_id" ref="rt_server_room"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_5'))]"/>
+        </record>
+        <record id="res_hvac_f5" model="room.manager.resource"><field name="name">HVAC Zone — Floor 5</field><field name="type_id" ref="rt_hvac_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_building'))]"/></record>
+        <record id="res_fire_f5" model="room.manager.resource"><field name="name">Fire System — Floor 5</field><field name="type_id" ref="rt_fire_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_fire_building'))]"/></record>
+        <record id="res_security_f5" model="room.manager.resource"><field name="name">Security System — Floor 5</field><field name="type_id" ref="rt_security_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_security_building'))]"/></record>
+        <record id="res_electrical_f5" model="room.manager.resource"><field name="name">Electrical Panel — Floor 5</field><field name="type_id" ref="rt_electrical_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_building'))]"/></record>
+        <record id="res_occupancy_f5" model="room.manager.resource"><field name="name">Occupancy System — Floor 5</field><field name="type_id" ref="rt_occupancy_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_occupancy_building'))]"/></record>
+        <!-- F5 office sensors -->
+        <record id="res_f5_offA_iaq" model="room.manager.resource"><field name="name">F5-OfficeA — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_office_a')),(4, ref('res_hvac_f5'))]"/></record>
+        <record id="res_f5_offA_smoke_1" model="room.manager.resource"><field name="name">F5-OfficeA — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_office_a')),(4, ref('res_fire_f5'))]"/></record>
+        <record id="res_f5_offA_smoke_2" model="room.manager.resource"><field name="name">F5-OfficeA — Smoke Detector 2</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_office_a')),(4, ref('res_fire_f5'))]"/></record>
+        <record id="res_f5_offA_pir" model="room.manager.resource"><field name="name">F5-OfficeA — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_office_a')),(4, ref('res_security_f5'))]"/></record>
+        <record id="res_f5_offA_desk_1" model="room.manager.resource"><field name="name">F5-OfficeA — Desk Occupancy Sensor 1</field><field name="type_id" ref="rt_sensor_desk_occ"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_office_a')),(4, ref('res_occupancy_f5'))]"/></record>
+        <record id="res_f5_offA_lux" model="room.manager.resource"><field name="name">F5-OfficeA — Lux Sensor</field><field name="type_id" ref="rt_sensor_lux"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_office_a')),(4, ref('res_occupancy_f5'))]"/></record>
+        <record id="res_f5_offA_mcp" model="room.manager.resource"><field name="name">F5-OfficeA — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_office_a')),(4, ref('res_fire_f5'))]"/></record>
+        <record id="res_f5_offB_iaq" model="room.manager.resource"><field name="name">F5-OfficeB — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_office_b')),(4, ref('res_hvac_f5'))]"/></record>
+        <record id="res_f5_offB_smoke_1" model="room.manager.resource"><field name="name">F5-OfficeB — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_office_b')),(4, ref('res_fire_f5'))]"/></record>
+        <record id="res_f5_offB_pir" model="room.manager.resource"><field name="name">F5-OfficeB — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_office_b')),(4, ref('res_security_f5'))]"/></record>
+        <record id="res_f5_meet1_co2" model="room.manager.resource"><field name="name">F5-Meeting1 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_meeting_1')),(4, ref('res_hvac_f5'))]"/></record>
+        <record id="res_f5_meet1_temp_hum" model="room.manager.resource"><field name="name">F5-Meeting1 — Temp &amp; Humidity Sensor</field><field name="type_id" ref="rt_sensor_temp_hum"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_meeting_1')),(4, ref('res_hvac_f5'))]"/></record>
+        <record id="res_f5_meet1_tof" model="room.manager.resource"><field name="name">F5-Meeting1 — ToF People Counter</field><field name="type_id" ref="rt_sensor_tof_counter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_meeting_1')),(4, ref('res_occupancy_f5'))]"/></record>
+        <record id="res_f5_meet1_smoke" model="room.manager.resource"><field name="name">F5-Meeting1 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_meeting_1')),(4, ref('res_fire_f5'))]"/></record>
+        <record id="res_f5_meet2_co2" model="room.manager.resource"><field name="name">F5-Meeting2 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_meeting_2')),(4, ref('res_hvac_f5'))]"/></record>
+        <record id="res_f5_meet2_smoke" model="room.manager.resource"><field name="name">F5-Meeting2 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_meeting_2')),(4, ref('res_fire_f5'))]"/></record>
+        <!-- F5 IDF sensors -->
+        <record id="res_f5_idf_temp_hum_1" model="room.manager.resource">
+            <field name="name">F5-IDF — Temp &amp; Humidity Sensor (Hot Aisle)</field>
+            <field name="type_id" ref="rt_sensor_temp_hum"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f5_idf')),(4, ref('res_hvac_f5'))]"/>
+        </record>
+        <record id="res_f5_idf_temp_hum_2" model="room.manager.resource">
+            <field name="name">F5-IDF — Temp &amp; Humidity Sensor (Cold Aisle)</field>
+            <field name="type_id" ref="rt_sensor_temp_hum"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f5_idf')),(4, ref('res_hvac_f5'))]"/>
+        </record>
+        <record id="res_f5_idf_smoke_1" model="room.manager.resource">
+            <field name="name">F5-IDF — Smoke Detector 1</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f5_idf')),(4, ref('res_fire_f5'))]"/>
+        </record>
+        <record id="res_f5_idf_smoke_2" model="room.manager.resource">
+            <field name="name">F5-IDF — Smoke Detector 2 (Under Floor)</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f5_idf')),(4, ref('res_fire_f5'))]"/>
+        </record>
+        <record id="res_f5_idf_leak" model="room.manager.resource">
+            <field name="name">F5-IDF — Water Leak Detector (Sensing Cable)</field>
+            <field name="type_id" ref="rt_sensor_water_leak"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f5_idf')),(4, ref('res_water_building'))]"/>
+        </record>
+        <record id="res_f5_idf_power_meter" model="room.manager.resource">
+            <field name="name">F5-IDF — PDU Power Meter</field>
+            <field name="type_id" ref="rt_sensor_power_meter"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f5_idf')),(4, ref('res_electrical_f5'))]"/>
+        </record>
+        <record id="res_f5_idf_card" model="room.manager.resource">
+            <field name="name">F5-IDF — Card Reader (Door)</field>
+            <field name="type_id" ref="rt_sensor_card_reader"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_f5_idf')),(4, ref('res_security_f5'))]"/>
+        </record>
+        <!-- F5 corridor/stair/toilet -->
+        <record id="res_f5_corr_pir" model="room.manager.resource"><field name="name">F5-Corridor — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_corridor')),(4, ref('res_security_f5'))]"/></record>
+        <record id="res_f5_corr_smoke" model="room.manager.resource"><field name="name">F5-Corridor — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_corridor')),(4, ref('res_fire_f5'))]"/></record>
+        <record id="res_f5_corr_mcp" model="room.manager.resource"><field name="name">F5-Corridor — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_corridor')),(4, ref('res_fire_f5'))]"/></record>
+        <record id="res_f5_stairA_smoke" model="room.manager.resource"><field name="name">F5-StairA — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_stairwell_a')),(4, ref('res_fire_f5'))]"/></record>
+        <record id="res_f5_stairA_door" model="room.manager.resource"><field name="name">F5-StairA — Door Contact</field><field name="type_id" ref="rt_sensor_door_contact"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_stairwell_a')),(4, ref('res_security_f5'))]"/></record>
+        <record id="res_f5_toilet_leak" model="room.manager.resource"><field name="name">F5-Toilet — Water Leak Detector</field><field name="type_id" ref="rt_sensor_water_leak"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f5_toilet')),(4, ref('res_water_building'))]"/></record>
+        <record id="res_f5_elec_power_meter" model="room.manager.resource"><field name="name">F5 — Floor Power Meter</field><field name="type_id" ref="rt_sensor_power_meter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_f5'))]"/></record>
+        <record id="res_f5_ahu_duct_temp" model="room.manager.resource"><field name="name">F5-AHU — Duct Temp Sensor</field><field name="type_id" ref="rt_sensor_duct_temp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f5'))]"/></record>
+        <record id="res_f5_ahu_diff_p" model="room.manager.resource"><field name="name">F5-AHU — Differential Pressure Sensor</field><field name="type_id" ref="rt_sensor_diff_pressure"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f5'))]"/></record>
+
+
+        <!-- FLOORS 6–9 follow the same abbreviated pattern as F3/F4 -->
+
+        <!-- FLOOR 6 -->
+        <record id="res_floor_6" model="room.manager.resource"><field name="name">Floor 6</field><field name="type_id" ref="rt_floor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_building'))]"/></record>
+        <record id="res_f6_office_a" model="room.manager.resource"><field name="name">F6 — Open Office Zone A</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_6'))]"/></record>
+        <record id="res_f6_office_b" model="room.manager.resource"><field name="name">F6 — Open Office Zone B</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_6'))]"/></record>
+        <record id="res_f6_meeting_1" model="room.manager.resource"><field name="name">F6 — Meeting Room 1</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_6'))]"/></record>
+        <record id="res_f6_meeting_2" model="room.manager.resource"><field name="name">F6 — Meeting Room 2</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_6'))]"/></record>
+        <record id="res_f6_corridor" model="room.manager.resource"><field name="name">F6 — Corridor</field><field name="type_id" ref="rt_corridor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_6'))]"/></record>
+        <record id="res_f6_toilet" model="room.manager.resource"><field name="name">F6 — Toilets</field><field name="type_id" ref="rt_toilet"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_6'))]"/></record>
+        <record id="res_f6_stairwell_a" model="room.manager.resource"><field name="name">F6 — Stairwell A</field><field name="type_id" ref="rt_stairwell"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_6'))]"/></record>
+        <record id="res_hvac_f6" model="room.manager.resource"><field name="name">HVAC Zone — Floor 6</field><field name="type_id" ref="rt_hvac_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_building'))]"/></record>
+        <record id="res_fire_f6" model="room.manager.resource"><field name="name">Fire System — Floor 6</field><field name="type_id" ref="rt_fire_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_fire_building'))]"/></record>
+        <record id="res_security_f6" model="room.manager.resource"><field name="name">Security System — Floor 6</field><field name="type_id" ref="rt_security_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_security_building'))]"/></record>
+        <record id="res_electrical_f6" model="room.manager.resource"><field name="name">Electrical Panel — Floor 6</field><field name="type_id" ref="rt_electrical_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_building'))]"/></record>
+        <record id="res_occupancy_f6" model="room.manager.resource"><field name="name">Occupancy System — Floor 6</field><field name="type_id" ref="rt_occupancy_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_occupancy_building'))]"/></record>
+        <record id="res_f6_offA_iaq" model="room.manager.resource"><field name="name">F6-OfficeA — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_office_a')),(4, ref('res_hvac_f6'))]"/></record>
+        <record id="res_f6_offA_smoke_1" model="room.manager.resource"><field name="name">F6-OfficeA — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_office_a')),(4, ref('res_fire_f6'))]"/></record>
+        <record id="res_f6_offA_smoke_2" model="room.manager.resource"><field name="name">F6-OfficeA — Smoke Detector 2</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_office_a')),(4, ref('res_fire_f6'))]"/></record>
+        <record id="res_f6_offA_pir" model="room.manager.resource"><field name="name">F6-OfficeA — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_office_a')),(4, ref('res_security_f6'))]"/></record>
+        <record id="res_f6_offA_desk_1" model="room.manager.resource"><field name="name">F6-OfficeA — Desk Occupancy Sensor 1</field><field name="type_id" ref="rt_sensor_desk_occ"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_office_a')),(4, ref('res_occupancy_f6'))]"/></record>
+        <record id="res_f6_offA_lux" model="room.manager.resource"><field name="name">F6-OfficeA — Lux Sensor</field><field name="type_id" ref="rt_sensor_lux"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_office_a')),(4, ref('res_occupancy_f6'))]"/></record>
+        <record id="res_f6_offA_mcp" model="room.manager.resource"><field name="name">F6-OfficeA — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_office_a')),(4, ref('res_fire_f6'))]"/></record>
+        <record id="res_f6_offB_iaq" model="room.manager.resource"><field name="name">F6-OfficeB — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_office_b')),(4, ref('res_hvac_f6'))]"/></record>
+        <record id="res_f6_offB_smoke_1" model="room.manager.resource"><field name="name">F6-OfficeB — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_office_b')),(4, ref('res_fire_f6'))]"/></record>
+        <record id="res_f6_offB_pir" model="room.manager.resource"><field name="name">F6-OfficeB — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_office_b')),(4, ref('res_security_f6'))]"/></record>
+        <record id="res_f6_meet1_co2" model="room.manager.resource"><field name="name">F6-Meeting1 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_meeting_1')),(4, ref('res_hvac_f6'))]"/></record>
+        <record id="res_f6_meet1_temp_hum" model="room.manager.resource"><field name="name">F6-Meeting1 — Temp &amp; Humidity Sensor</field><field name="type_id" ref="rt_sensor_temp_hum"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_meeting_1')),(4, ref('res_hvac_f6'))]"/></record>
+        <record id="res_f6_meet1_tof" model="room.manager.resource"><field name="name">F6-Meeting1 — ToF People Counter</field><field name="type_id" ref="rt_sensor_tof_counter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_meeting_1')),(4, ref('res_occupancy_f6'))]"/></record>
+        <record id="res_f6_meet1_smoke" model="room.manager.resource"><field name="name">F6-Meeting1 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_meeting_1')),(4, ref('res_fire_f6'))]"/></record>
+        <record id="res_f6_meet2_co2" model="room.manager.resource"><field name="name">F6-Meeting2 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_meeting_2')),(4, ref('res_hvac_f6'))]"/></record>
+        <record id="res_f6_meet2_smoke" model="room.manager.resource"><field name="name">F6-Meeting2 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_meeting_2')),(4, ref('res_fire_f6'))]"/></record>
+        <record id="res_f6_corr_pir" model="room.manager.resource"><field name="name">F6-Corridor — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_corridor')),(4, ref('res_security_f6'))]"/></record>
+        <record id="res_f6_corr_smoke" model="room.manager.resource"><field name="name">F6-Corridor — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_corridor')),(4, ref('res_fire_f6'))]"/></record>
+        <record id="res_f6_corr_mcp" model="room.manager.resource"><field name="name">F6-Corridor — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_corridor')),(4, ref('res_fire_f6'))]"/></record>
+        <record id="res_f6_stairA_smoke" model="room.manager.resource"><field name="name">F6-StairA — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_stairwell_a')),(4, ref('res_fire_f6'))]"/></record>
+        <record id="res_f6_stairA_door" model="room.manager.resource"><field name="name">F6-StairA — Door Contact</field><field name="type_id" ref="rt_sensor_door_contact"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_stairwell_a')),(4, ref('res_security_f6'))]"/></record>
+        <record id="res_f6_toilet_leak" model="room.manager.resource"><field name="name">F6-Toilet — Water Leak Detector</field><field name="type_id" ref="rt_sensor_water_leak"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f6_toilet')),(4, ref('res_water_building'))]"/></record>
+        <record id="res_f6_elec_power_meter" model="room.manager.resource"><field name="name">F6 — Floor Power Meter</field><field name="type_id" ref="rt_sensor_power_meter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_f6'))]"/></record>
+        <record id="res_f6_ahu_duct_temp" model="room.manager.resource"><field name="name">F6-AHU — Duct Temp Sensor</field><field name="type_id" ref="rt_sensor_duct_temp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f6'))]"/></record>
+        <record id="res_f6_ahu_diff_p" model="room.manager.resource"><field name="name">F6-AHU — Differential Pressure Sensor</field><field name="type_id" ref="rt_sensor_diff_pressure"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f6'))]"/></record>
+
+        <!-- FLOOR 7 -->
+        <record id="res_floor_7" model="room.manager.resource"><field name="name">Floor 7</field><field name="type_id" ref="rt_floor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_building'))]"/></record>
+        <record id="res_f7_office_a" model="room.manager.resource"><field name="name">F7 — Open Office Zone A</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_7'))]"/></record>
+        <record id="res_f7_office_b" model="room.manager.resource"><field name="name">F7 — Open Office Zone B</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_7'))]"/></record>
+        <record id="res_f7_meeting_1" model="room.manager.resource"><field name="name">F7 — Meeting Room 1</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_7'))]"/></record>
+        <record id="res_f7_meeting_2" model="room.manager.resource"><field name="name">F7 — Meeting Room 2</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_7'))]"/></record>
+        <record id="res_f7_corridor" model="room.manager.resource"><field name="name">F7 — Corridor</field><field name="type_id" ref="rt_corridor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_7'))]"/></record>
+        <record id="res_f7_toilet" model="room.manager.resource"><field name="name">F7 — Toilets</field><field name="type_id" ref="rt_toilet"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_7'))]"/></record>
+        <record id="res_f7_stairwell_a" model="room.manager.resource"><field name="name">F7 — Stairwell A</field><field name="type_id" ref="rt_stairwell"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_7'))]"/></record>
+        <record id="res_hvac_f7" model="room.manager.resource"><field name="name">HVAC Zone — Floor 7</field><field name="type_id" ref="rt_hvac_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_building'))]"/></record>
+        <record id="res_fire_f7" model="room.manager.resource"><field name="name">Fire System — Floor 7</field><field name="type_id" ref="rt_fire_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_fire_building'))]"/></record>
+        <record id="res_security_f7" model="room.manager.resource"><field name="name">Security System — Floor 7</field><field name="type_id" ref="rt_security_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_security_building'))]"/></record>
+        <record id="res_electrical_f7" model="room.manager.resource"><field name="name">Electrical Panel — Floor 7</field><field name="type_id" ref="rt_electrical_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_building'))]"/></record>
+        <record id="res_occupancy_f7" model="room.manager.resource"><field name="name">Occupancy System — Floor 7</field><field name="type_id" ref="rt_occupancy_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_occupancy_building'))]"/></record>
+        <record id="res_f7_offA_iaq" model="room.manager.resource"><field name="name">F7-OfficeA — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_office_a')),(4, ref('res_hvac_f7'))]"/></record>
+        <record id="res_f7_offA_smoke_1" model="room.manager.resource"><field name="name">F7-OfficeA — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_office_a')),(4, ref('res_fire_f7'))]"/></record>
+        <record id="res_f7_offA_smoke_2" model="room.manager.resource"><field name="name">F7-OfficeA — Smoke Detector 2</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_office_a')),(4, ref('res_fire_f7'))]"/></record>
+        <record id="res_f7_offA_pir" model="room.manager.resource"><field name="name">F7-OfficeA — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_office_a')),(4, ref('res_security_f7'))]"/></record>
+        <record id="res_f7_offA_desk_1" model="room.manager.resource"><field name="name">F7-OfficeA — Desk Occupancy Sensor 1</field><field name="type_id" ref="rt_sensor_desk_occ"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_office_a')),(4, ref('res_occupancy_f7'))]"/></record>
+        <record id="res_f7_offA_lux" model="room.manager.resource"><field name="name">F7-OfficeA — Lux Sensor</field><field name="type_id" ref="rt_sensor_lux"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_office_a')),(4, ref('res_occupancy_f7'))]"/></record>
+        <record id="res_f7_offA_mcp" model="room.manager.resource"><field name="name">F7-OfficeA — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_office_a')),(4, ref('res_fire_f7'))]"/></record>
+        <record id="res_f7_offB_iaq" model="room.manager.resource"><field name="name">F7-OfficeB — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_office_b')),(4, ref('res_hvac_f7'))]"/></record>
+        <record id="res_f7_offB_smoke_1" model="room.manager.resource"><field name="name">F7-OfficeB — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_office_b')),(4, ref('res_fire_f7'))]"/></record>
+        <record id="res_f7_offB_pir" model="room.manager.resource"><field name="name">F7-OfficeB — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_office_b')),(4, ref('res_security_f7'))]"/></record>
+        <record id="res_f7_meet1_co2" model="room.manager.resource"><field name="name">F7-Meeting1 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_meeting_1')),(4, ref('res_hvac_f7'))]"/></record>
+        <record id="res_f7_meet1_temp_hum" model="room.manager.resource"><field name="name">F7-Meeting1 — Temp &amp; Humidity Sensor</field><field name="type_id" ref="rt_sensor_temp_hum"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_meeting_1')),(4, ref('res_hvac_f7'))]"/></record>
+        <record id="res_f7_meet1_tof" model="room.manager.resource"><field name="name">F7-Meeting1 — ToF People Counter</field><field name="type_id" ref="rt_sensor_tof_counter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_meeting_1')),(4, ref('res_occupancy_f7'))]"/></record>
+        <record id="res_f7_meet1_smoke" model="room.manager.resource"><field name="name">F7-Meeting1 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_meeting_1')),(4, ref('res_fire_f7'))]"/></record>
+        <record id="res_f7_meet2_smoke" model="room.manager.resource"><field name="name">F7-Meeting2 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_meeting_2')),(4, ref('res_fire_f7'))]"/></record>
+        <record id="res_f7_meet2_co2" model="room.manager.resource"><field name="name">F7-Meeting2 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_meeting_2')),(4, ref('res_hvac_f7'))]"/></record>
+        <record id="res_f7_corr_pir" model="room.manager.resource"><field name="name">F7-Corridor — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_corridor')),(4, ref('res_security_f7'))]"/></record>
+        <record id="res_f7_corr_smoke" model="room.manager.resource"><field name="name">F7-Corridor — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_corridor')),(4, ref('res_fire_f7'))]"/></record>
+        <record id="res_f7_corr_mcp" model="room.manager.resource"><field name="name">F7-Corridor — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_corridor')),(4, ref('res_fire_f7'))]"/></record>
+        <record id="res_f7_stairA_smoke" model="room.manager.resource"><field name="name">F7-StairA — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_stairwell_a')),(4, ref('res_fire_f7'))]"/></record>
+        <record id="res_f7_stairA_door" model="room.manager.resource"><field name="name">F7-StairA — Door Contact</field><field name="type_id" ref="rt_sensor_door_contact"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_stairwell_a')),(4, ref('res_security_f7'))]"/></record>
+        <record id="res_f7_toilet_leak" model="room.manager.resource"><field name="name">F7-Toilet — Water Leak Detector</field><field name="type_id" ref="rt_sensor_water_leak"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f7_toilet')),(4, ref('res_water_building'))]"/></record>
+        <record id="res_f7_elec_power_meter" model="room.manager.resource"><field name="name">F7 — Floor Power Meter</field><field name="type_id" ref="rt_sensor_power_meter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_f7'))]"/></record>
+        <record id="res_f7_ahu_duct_temp" model="room.manager.resource"><field name="name">F7-AHU — Duct Temp Sensor</field><field name="type_id" ref="rt_sensor_duct_temp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f7'))]"/></record>
+        <record id="res_f7_ahu_diff_p" model="room.manager.resource"><field name="name">F7-AHU — Differential Pressure Sensor</field><field name="type_id" ref="rt_sensor_diff_pressure"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f7'))]"/></record>
+
+        <!-- FLOOR 8 -->
+        <record id="res_floor_8" model="room.manager.resource"><field name="name">Floor 8</field><field name="type_id" ref="rt_floor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_building'))]"/></record>
+        <record id="res_f8_office_a" model="room.manager.resource"><field name="name">F8 — Open Office Zone A</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_8'))]"/></record>
+        <record id="res_f8_office_b" model="room.manager.resource"><field name="name">F8 — Open Office Zone B</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_8'))]"/></record>
+        <record id="res_f8_meeting_1" model="room.manager.resource"><field name="name">F8 — Meeting Room 1</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_8'))]"/></record>
+        <record id="res_f8_meeting_2" model="room.manager.resource"><field name="name">F8 — Meeting Room 2</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_8'))]"/></record>
+        <record id="res_f8_corridor" model="room.manager.resource"><field name="name">F8 — Corridor</field><field name="type_id" ref="rt_corridor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_8'))]"/></record>
+        <record id="res_f8_toilet" model="room.manager.resource"><field name="name">F8 — Toilets</field><field name="type_id" ref="rt_toilet"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_8'))]"/></record>
+        <record id="res_f8_stairwell_a" model="room.manager.resource"><field name="name">F8 — Stairwell A</field><field name="type_id" ref="rt_stairwell"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_8'))]"/></record>
+        <record id="res_hvac_f8" model="room.manager.resource"><field name="name">HVAC Zone — Floor 8</field><field name="type_id" ref="rt_hvac_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_building'))]"/></record>
+        <record id="res_fire_f8" model="room.manager.resource"><field name="name">Fire System — Floor 8</field><field name="type_id" ref="rt_fire_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_fire_building'))]"/></record>
+        <record id="res_security_f8" model="room.manager.resource"><field name="name">Security System — Floor 8</field><field name="type_id" ref="rt_security_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_security_building'))]"/></record>
+        <record id="res_electrical_f8" model="room.manager.resource"><field name="name">Electrical Panel — Floor 8</field><field name="type_id" ref="rt_electrical_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_building'))]"/></record>
+        <record id="res_occupancy_f8" model="room.manager.resource"><field name="name">Occupancy System — Floor 8</field><field name="type_id" ref="rt_occupancy_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_occupancy_building'))]"/></record>
+        <record id="res_f8_offA_iaq" model="room.manager.resource"><field name="name">F8-OfficeA — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_office_a')),(4, ref('res_hvac_f8'))]"/></record>
+        <record id="res_f8_offA_smoke_1" model="room.manager.resource"><field name="name">F8-OfficeA — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_office_a')),(4, ref('res_fire_f8'))]"/></record>
+        <record id="res_f8_offA_smoke_2" model="room.manager.resource"><field name="name">F8-OfficeA — Smoke Detector 2</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_office_a')),(4, ref('res_fire_f8'))]"/></record>
+        <record id="res_f8_offA_pir" model="room.manager.resource"><field name="name">F8-OfficeA — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_office_a')),(4, ref('res_security_f8'))]"/></record>
+        <record id="res_f8_offA_desk_1" model="room.manager.resource"><field name="name">F8-OfficeA — Desk Occupancy Sensor 1</field><field name="type_id" ref="rt_sensor_desk_occ"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_office_a')),(4, ref('res_occupancy_f8'))]"/></record>
+        <record id="res_f8_offA_lux" model="room.manager.resource"><field name="name">F8-OfficeA — Lux Sensor</field><field name="type_id" ref="rt_sensor_lux"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_office_a')),(4, ref('res_occupancy_f8'))]"/></record>
+        <record id="res_f8_offA_mcp" model="room.manager.resource"><field name="name">F8-OfficeA — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_office_a')),(4, ref('res_fire_f8'))]"/></record>
+        <record id="res_f8_offB_iaq" model="room.manager.resource"><field name="name">F8-OfficeB — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_office_b')),(4, ref('res_hvac_f8'))]"/></record>
+        <record id="res_f8_offB_smoke_1" model="room.manager.resource"><field name="name">F8-OfficeB — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_office_b')),(4, ref('res_fire_f8'))]"/></record>
+        <record id="res_f8_offB_pir" model="room.manager.resource"><field name="name">F8-OfficeB — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_office_b')),(4, ref('res_security_f8'))]"/></record>
+        <record id="res_f8_meet1_co2" model="room.manager.resource"><field name="name">F8-Meeting1 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_meeting_1')),(4, ref('res_hvac_f8'))]"/></record>
+        <record id="res_f8_meet1_temp_hum" model="room.manager.resource"><field name="name">F8-Meeting1 — Temp &amp; Humidity Sensor</field><field name="type_id" ref="rt_sensor_temp_hum"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_meeting_1')),(4, ref('res_hvac_f8'))]"/></record>
+        <record id="res_f8_meet1_tof" model="room.manager.resource"><field name="name">F8-Meeting1 — ToF People Counter</field><field name="type_id" ref="rt_sensor_tof_counter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_meeting_1')),(4, ref('res_occupancy_f8'))]"/></record>
+        <record id="res_f8_meet1_smoke" model="room.manager.resource"><field name="name">F8-Meeting1 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_meeting_1')),(4, ref('res_fire_f8'))]"/></record>
+        <record id="res_f8_meet2_smoke" model="room.manager.resource"><field name="name">F8-Meeting2 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_meeting_2')),(4, ref('res_fire_f8'))]"/></record>
+        <record id="res_f8_meet2_co2" model="room.manager.resource"><field name="name">F8-Meeting2 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_meeting_2')),(4, ref('res_hvac_f8'))]"/></record>
+        <record id="res_f8_corr_pir" model="room.manager.resource"><field name="name">F8-Corridor — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_corridor')),(4, ref('res_security_f8'))]"/></record>
+        <record id="res_f8_corr_smoke" model="room.manager.resource"><field name="name">F8-Corridor — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_corridor')),(4, ref('res_fire_f8'))]"/></record>
+        <record id="res_f8_corr_mcp" model="room.manager.resource"><field name="name">F8-Corridor — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_corridor')),(4, ref('res_fire_f8'))]"/></record>
+        <record id="res_f8_stairA_smoke" model="room.manager.resource"><field name="name">F8-StairA — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_stairwell_a')),(4, ref('res_fire_f8'))]"/></record>
+        <record id="res_f8_stairA_door" model="room.manager.resource"><field name="name">F8-StairA — Door Contact</field><field name="type_id" ref="rt_sensor_door_contact"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_stairwell_a')),(4, ref('res_security_f8'))]"/></record>
+        <record id="res_f8_toilet_leak" model="room.manager.resource"><field name="name">F8-Toilet — Water Leak Detector</field><field name="type_id" ref="rt_sensor_water_leak"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f8_toilet')),(4, ref('res_water_building'))]"/></record>
+        <record id="res_f8_elec_power_meter" model="room.manager.resource"><field name="name">F8 — Floor Power Meter</field><field name="type_id" ref="rt_sensor_power_meter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_f8'))]"/></record>
+        <record id="res_f8_ahu_duct_temp" model="room.manager.resource"><field name="name">F8-AHU — Duct Temp Sensor</field><field name="type_id" ref="rt_sensor_duct_temp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f8'))]"/></record>
+        <record id="res_f8_ahu_diff_p" model="room.manager.resource"><field name="name">F8-AHU — Differential Pressure Sensor</field><field name="type_id" ref="rt_sensor_diff_pressure"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f8'))]"/></record>
+
+        <!-- FLOOR 9 -->
+        <record id="res_floor_9" model="room.manager.resource"><field name="name">Floor 9</field><field name="type_id" ref="rt_floor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_building'))]"/></record>
+        <record id="res_f9_office_a" model="room.manager.resource"><field name="name">F9 — Open Office Zone A</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_9'))]"/></record>
+        <record id="res_f9_office_b" model="room.manager.resource"><field name="name">F9 — Open Office Zone B</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_9'))]"/></record>
+        <record id="res_f9_meeting_1" model="room.manager.resource"><field name="name">F9 — Meeting Room 1</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_9'))]"/></record>
+        <record id="res_f9_meeting_2" model="room.manager.resource"><field name="name">F9 — Meeting Room 2</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_9'))]"/></record>
+        <record id="res_f9_corridor" model="room.manager.resource"><field name="name">F9 — Corridor</field><field name="type_id" ref="rt_corridor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_9'))]"/></record>
+        <record id="res_f9_toilet" model="room.manager.resource"><field name="name">F9 — Toilets</field><field name="type_id" ref="rt_toilet"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_9'))]"/></record>
+        <record id="res_f9_stairwell_a" model="room.manager.resource"><field name="name">F9 — Stairwell A</field><field name="type_id" ref="rt_stairwell"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_9'))]"/></record>
+        <record id="res_hvac_f9" model="room.manager.resource"><field name="name">HVAC Zone — Floor 9</field><field name="type_id" ref="rt_hvac_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_building'))]"/></record>
+        <record id="res_fire_f9" model="room.manager.resource"><field name="name">Fire System — Floor 9</field><field name="type_id" ref="rt_fire_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_fire_building'))]"/></record>
+        <record id="res_security_f9" model="room.manager.resource"><field name="name">Security System — Floor 9</field><field name="type_id" ref="rt_security_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_security_building'))]"/></record>
+        <record id="res_electrical_f9" model="room.manager.resource"><field name="name">Electrical Panel — Floor 9</field><field name="type_id" ref="rt_electrical_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_building'))]"/></record>
+        <record id="res_occupancy_f9" model="room.manager.resource"><field name="name">Occupancy System — Floor 9</field><field name="type_id" ref="rt_occupancy_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_occupancy_building'))]"/></record>
+        <record id="res_f9_offA_iaq" model="room.manager.resource"><field name="name">F9-OfficeA — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_office_a')),(4, ref('res_hvac_f9'))]"/></record>
+        <record id="res_f9_offA_smoke_1" model="room.manager.resource"><field name="name">F9-OfficeA — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_office_a')),(4, ref('res_fire_f9'))]"/></record>
+        <record id="res_f9_offA_smoke_2" model="room.manager.resource"><field name="name">F9-OfficeA — Smoke Detector 2</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_office_a')),(4, ref('res_fire_f9'))]"/></record>
+        <record id="res_f9_offA_pir" model="room.manager.resource"><field name="name">F9-OfficeA — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_office_a')),(4, ref('res_security_f9'))]"/></record>
+        <record id="res_f9_offA_desk_1" model="room.manager.resource"><field name="name">F9-OfficeA — Desk Occupancy Sensor 1</field><field name="type_id" ref="rt_sensor_desk_occ"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_office_a')),(4, ref('res_occupancy_f9'))]"/></record>
+        <record id="res_f9_offA_lux" model="room.manager.resource"><field name="name">F9-OfficeA — Lux Sensor</field><field name="type_id" ref="rt_sensor_lux"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_office_a')),(4, ref('res_occupancy_f9'))]"/></record>
+        <record id="res_f9_offA_mcp" model="room.manager.resource"><field name="name">F9-OfficeA — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_office_a')),(4, ref('res_fire_f9'))]"/></record>
+        <record id="res_f9_offB_iaq" model="room.manager.resource"><field name="name">F9-OfficeB — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_office_b')),(4, ref('res_hvac_f9'))]"/></record>
+        <record id="res_f9_offB_smoke_1" model="room.manager.resource"><field name="name">F9-OfficeB — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_office_b')),(4, ref('res_fire_f9'))]"/></record>
+        <record id="res_f9_offB_pir" model="room.manager.resource"><field name="name">F9-OfficeB — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_office_b')),(4, ref('res_security_f9'))]"/></record>
+        <record id="res_f9_meet1_co2" model="room.manager.resource"><field name="name">F9-Meeting1 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_meeting_1')),(4, ref('res_hvac_f9'))]"/></record>
+        <record id="res_f9_meet1_temp_hum" model="room.manager.resource"><field name="name">F9-Meeting1 — Temp &amp; Humidity Sensor</field><field name="type_id" ref="rt_sensor_temp_hum"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_meeting_1')),(4, ref('res_hvac_f9'))]"/></record>
+        <record id="res_f9_meet1_tof" model="room.manager.resource"><field name="name">F9-Meeting1 — ToF People Counter</field><field name="type_id" ref="rt_sensor_tof_counter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_meeting_1')),(4, ref('res_occupancy_f9'))]"/></record>
+        <record id="res_f9_meet1_smoke" model="room.manager.resource"><field name="name">F9-Meeting1 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_meeting_1')),(4, ref('res_fire_f9'))]"/></record>
+        <record id="res_f9_meet2_smoke" model="room.manager.resource"><field name="name">F9-Meeting2 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_meeting_2')),(4, ref('res_fire_f9'))]"/></record>
+        <record id="res_f9_meet2_co2" model="room.manager.resource"><field name="name">F9-Meeting2 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_meeting_2')),(4, ref('res_hvac_f9'))]"/></record>
+        <record id="res_f9_corr_pir" model="room.manager.resource"><field name="name">F9-Corridor — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_corridor')),(4, ref('res_security_f9'))]"/></record>
+        <record id="res_f9_corr_smoke" model="room.manager.resource"><field name="name">F9-Corridor — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_corridor')),(4, ref('res_fire_f9'))]"/></record>
+        <record id="res_f9_corr_mcp" model="room.manager.resource"><field name="name">F9-Corridor — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_corridor')),(4, ref('res_fire_f9'))]"/></record>
+        <record id="res_f9_stairA_smoke" model="room.manager.resource"><field name="name">F9-StairA — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_stairwell_a')),(4, ref('res_fire_f9'))]"/></record>
+        <record id="res_f9_stairA_door" model="room.manager.resource"><field name="name">F9-StairA — Door Contact</field><field name="type_id" ref="rt_sensor_door_contact"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_stairwell_a')),(4, ref('res_security_f9'))]"/></record>
+        <record id="res_f9_toilet_leak" model="room.manager.resource"><field name="name">F9-Toilet — Water Leak Detector</field><field name="type_id" ref="rt_sensor_water_leak"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f9_toilet')),(4, ref('res_water_building'))]"/></record>
+        <record id="res_f9_elec_power_meter" model="room.manager.resource"><field name="name">F9 — Floor Power Meter</field><field name="type_id" ref="rt_sensor_power_meter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_f9'))]"/></record>
+        <record id="res_f9_ahu_duct_temp" model="room.manager.resource"><field name="name">F9-AHU — Duct Temp Sensor</field><field name="type_id" ref="rt_sensor_duct_temp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f9'))]"/></record>
+        <record id="res_f9_ahu_diff_p" model="room.manager.resource"><field name="name">F9-AHU — Differential Pressure Sensor</field><field name="type_id" ref="rt_sensor_diff_pressure"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f9'))]"/></record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════
+             FLOOR 10  — top occupied floor (executive level)
+             Extra features: larger meeting rooms, dedicated IDF,
+             executive offices with extra sensors
+        ═══════════════════════════════════════════════════════════ -->
+        <record id="res_floor_10" model="room.manager.resource">
+            <field name="name">Floor 10 (Executive Level)</field>
+            <field name="type_id" ref="rt_floor"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_building'))]"/>
+        </record>
+        <record id="res_f10_office_a" model="room.manager.resource"><field name="name">F10 — Executive Office Zone A</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_10'))]"/></record>
+        <record id="res_f10_office_b" model="room.manager.resource"><field name="name">F10 — Executive Office Zone B</field><field name="type_id" ref="rt_office"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_10'))]"/></record>
+        <record id="res_f10_boardroom" model="room.manager.resource">
+            <field name="name">F10 — Boardroom</field>
+            <field name="type_id" ref="rt_meeting_room"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_10'))]"/>
+        </record>
+        <record id="res_f10_meeting_1" model="room.manager.resource"><field name="name">F10 — Meeting Room 1</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_10'))]"/></record>
+        <record id="res_f10_meeting_2" model="room.manager.resource"><field name="name">F10 — Meeting Room 2</field><field name="type_id" ref="rt_meeting_room"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_10'))]"/></record>
+        <record id="res_f10_corridor" model="room.manager.resource"><field name="name">F10 — Corridor</field><field name="type_id" ref="rt_corridor"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_10'))]"/></record>
+        <record id="res_f10_toilet" model="room.manager.resource"><field name="name">F10 — Toilets</field><field name="type_id" ref="rt_toilet"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_10'))]"/></record>
+        <record id="res_f10_stairwell_a" model="room.manager.resource"><field name="name">F10 — Stairwell A</field><field name="type_id" ref="rt_stairwell"/><field name="contained_by_resource_ids" eval="[(4, ref('res_floor_10'))]"/></record>
+        <record id="res_f10_idf" model="room.manager.resource">
+            <field name="name">F10 — IDF / Server Room</field>
+            <field name="type_id" ref="rt_server_room"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_floor_10'))]"/>
+        </record>
+
+        <!-- Floor 10 sub-systems -->
+        <record id="res_hvac_f10" model="room.manager.resource"><field name="name">HVAC Zone — Floor 10</field><field name="type_id" ref="rt_hvac_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_building'))]"/></record>
+        <record id="res_fire_f10" model="room.manager.resource"><field name="name">Fire System — Floor 10</field><field name="type_id" ref="rt_fire_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_fire_building'))]"/></record>
+        <record id="res_security_f10" model="room.manager.resource"><field name="name">Security System — Floor 10</field><field name="type_id" ref="rt_security_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_security_building'))]"/></record>
+        <record id="res_electrical_f10" model="room.manager.resource"><field name="name">Electrical Panel — Floor 10</field><field name="type_id" ref="rt_electrical_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_building'))]"/></record>
+        <record id="res_occupancy_f10" model="room.manager.resource"><field name="name">Occupancy System — Floor 10</field><field name="type_id" ref="rt_occupancy_system"/><field name="contained_by_resource_ids" eval="[(4, ref('res_occupancy_building'))]"/></record>
+
+        <!-- F10 AHU -->
+        <record id="res_f10_ahu_duct_temp" model="room.manager.resource"><field name="name">F10-AHU — Duct Temp Sensor</field><field name="type_id" ref="rt_sensor_duct_temp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f10'))]"/></record>
+        <record id="res_f10_ahu_diff_p" model="room.manager.resource"><field name="name">F10-AHU — Differential Pressure Sensor</field><field name="type_id" ref="rt_sensor_diff_pressure"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f10'))]"/></record>
+        <record id="res_f10_ahu_air_vol" model="room.manager.resource"><field name="name">F10-AHU — Air Volume Sensor</field><field name="type_id" ref="rt_sensor_air_volume"/><field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_f10'))]"/></record>
+
+        <!-- F10 office sensors -->
+        <record id="res_f10_offA_iaq" model="room.manager.resource"><field name="name">F10-OfficeA — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_office_a')),(4, ref('res_hvac_f10'))]"/></record>
+        <record id="res_f10_offA_smoke_1" model="room.manager.resource"><field name="name">F10-OfficeA — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_office_a')),(4, ref('res_fire_f10'))]"/></record>
+        <record id="res_f10_offA_smoke_2" model="room.manager.resource"><field name="name">F10-OfficeA — Smoke Detector 2</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_office_a')),(4, ref('res_fire_f10'))]"/></record>
+        <record id="res_f10_offA_pir" model="room.manager.resource"><field name="name">F10-OfficeA — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_office_a')),(4, ref('res_security_f10'))]"/></record>
+        <record id="res_f10_offA_desk_1" model="room.manager.resource"><field name="name">F10-OfficeA — Desk Occupancy Sensor 1</field><field name="type_id" ref="rt_sensor_desk_occ"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_office_a')),(4, ref('res_occupancy_f10'))]"/></record>
+        <record id="res_f10_offA_lux" model="room.manager.resource"><field name="name">F10-OfficeA — Lux Sensor</field><field name="type_id" ref="rt_sensor_lux"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_office_a')),(4, ref('res_occupancy_f10'))]"/></record>
+        <record id="res_f10_offA_mcp" model="room.manager.resource"><field name="name">F10-OfficeA — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_office_a')),(4, ref('res_fire_f10'))]"/></record>
+        <record id="res_f10_offB_iaq" model="room.manager.resource"><field name="name">F10-OfficeB — IAQ Sensor</field><field name="type_id" ref="rt_sensor_iaq"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_office_b')),(4, ref('res_hvac_f10'))]"/></record>
+        <record id="res_f10_offB_smoke_1" model="room.manager.resource"><field name="name">F10-OfficeB — Smoke Detector 1</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_office_b')),(4, ref('res_fire_f10'))]"/></record>
+        <record id="res_f10_offB_pir" model="room.manager.resource"><field name="name">F10-OfficeB — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_office_b')),(4, ref('res_security_f10'))]"/></record>
+
+        <!-- F10 boardroom / meeting rooms -->
+        <record id="res_f10_board_co2" model="room.manager.resource"><field name="name">F10-Boardroom — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_boardroom')),(4, ref('res_hvac_f10'))]"/></record>
+        <record id="res_f10_board_temp_hum" model="room.manager.resource"><field name="name">F10-Boardroom — Temp &amp; Humidity Sensor</field><field name="type_id" ref="rt_sensor_temp_hum"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_boardroom')),(4, ref('res_hvac_f10'))]"/></record>
+        <record id="res_f10_board_tof" model="room.manager.resource"><field name="name">F10-Boardroom — ToF People Counter</field><field name="type_id" ref="rt_sensor_tof_counter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_boardroom')),(4, ref('res_occupancy_f10'))]"/></record>
+        <record id="res_f10_board_card" model="room.manager.resource"><field name="name">F10-Boardroom — Card Reader</field><field name="type_id" ref="rt_sensor_card_reader"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_boardroom')),(4, ref('res_security_f10'))]"/></record>
+        <record id="res_f10_board_smoke" model="room.manager.resource"><field name="name">F10-Boardroom — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_boardroom')),(4, ref('res_fire_f10'))]"/></record>
+        <record id="res_f10_meet1_co2" model="room.manager.resource"><field name="name">F10-Meeting1 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_meeting_1')),(4, ref('res_hvac_f10'))]"/></record>
+        <record id="res_f10_meet1_temp_hum" model="room.manager.resource"><field name="name">F10-Meeting1 — Temp &amp; Humidity Sensor</field><field name="type_id" ref="rt_sensor_temp_hum"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_meeting_1')),(4, ref('res_hvac_f10'))]"/></record>
+        <record id="res_f10_meet1_tof" model="room.manager.resource"><field name="name">F10-Meeting1 — ToF People Counter</field><field name="type_id" ref="rt_sensor_tof_counter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_meeting_1')),(4, ref('res_occupancy_f10'))]"/></record>
+        <record id="res_f10_meet1_smoke" model="room.manager.resource"><field name="name">F10-Meeting1 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_meeting_1')),(4, ref('res_fire_f10'))]"/></record>
+        <record id="res_f10_meet2_co2" model="room.manager.resource"><field name="name">F10-Meeting2 — CO₂ Sensor</field><field name="type_id" ref="rt_sensor_co2"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_meeting_2')),(4, ref('res_hvac_f10'))]"/></record>
+        <record id="res_f10_meet2_smoke" model="room.manager.resource"><field name="name">F10-Meeting2 — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_meeting_2')),(4, ref('res_fire_f10'))]"/></record>
+
+        <!-- F10 IDF sensors -->
+        <record id="res_f10_idf_temp_hum_1" model="room.manager.resource"><field name="name">F10-IDF — Temp &amp; Humidity Sensor (Hot Aisle)</field><field name="type_id" ref="rt_sensor_temp_hum"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_idf')),(4, ref('res_hvac_f10'))]"/></record>
+        <record id="res_f10_idf_smoke_1" model="room.manager.resource"><field name="name">F10-IDF — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_idf')),(4, ref('res_fire_f10'))]"/></record>
+        <record id="res_f10_idf_leak" model="room.manager.resource"><field name="name">F10-IDF — Water Leak Detector</field><field name="type_id" ref="rt_sensor_water_leak"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_idf')),(4, ref('res_water_building'))]"/></record>
+        <record id="res_f10_idf_power_meter" model="room.manager.resource"><field name="name">F10-IDF — PDU Power Meter</field><field name="type_id" ref="rt_sensor_power_meter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_idf')),(4, ref('res_electrical_f10'))]"/></record>
+        <record id="res_f10_idf_card" model="room.manager.resource"><field name="name">F10-IDF — Card Reader</field><field name="type_id" ref="rt_sensor_card_reader"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_idf')),(4, ref('res_security_f10'))]"/></record>
+
+        <!-- F10 corridor/stair/toilet -->
+        <record id="res_f10_corr_pir" model="room.manager.resource"><field name="name">F10-Corridor — PIR Motion Detector</field><field name="type_id" ref="rt_sensor_pir"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_corridor')),(4, ref('res_security_f10'))]"/></record>
+        <record id="res_f10_corr_smoke" model="room.manager.resource"><field name="name">F10-Corridor — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_corridor')),(4, ref('res_fire_f10'))]"/></record>
+        <record id="res_f10_corr_mcp" model="room.manager.resource"><field name="name">F10-Corridor — Manual Call Point</field><field name="type_id" ref="rt_sensor_mcp"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_corridor')),(4, ref('res_fire_f10'))]"/></record>
+        <record id="res_f10_stairA_smoke" model="room.manager.resource"><field name="name">F10-StairA — Smoke Detector</field><field name="type_id" ref="rt_sensor_smoke"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_stairwell_a')),(4, ref('res_fire_f10'))]"/></record>
+        <record id="res_f10_stairA_door" model="room.manager.resource"><field name="name">F10-StairA — Door Contact</field><field name="type_id" ref="rt_sensor_door_contact"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_stairwell_a')),(4, ref('res_security_f10'))]"/></record>
+        <record id="res_f10_toilet_leak" model="room.manager.resource"><field name="name">F10-Toilet — Water Leak Detector</field><field name="type_id" ref="rt_sensor_water_leak"/><field name="contained_by_resource_ids" eval="[(4, ref('res_f10_toilet')),(4, ref('res_water_building'))]"/></record>
+        <record id="res_f10_elec_power_meter" model="room.manager.resource"><field name="name">F10 — Floor Power Meter</field><field name="type_id" ref="rt_sensor_power_meter"/><field name="contained_by_resource_ids" eval="[(4, ref('res_electrical_f10'))]"/></record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════
+             ROOF PLANT ROOM / WEATHER STATION
+        ═══════════════════════════════════════════════════════════ -->
+
+        <record id="res_roof" model="room.manager.resource">
+            <field name="name">Roof Level — Plant Area</field>
+            <field name="type_id" ref="rt_roof"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_building'))]"/>
+        </record>
+
+        <record id="res_roof_plant_room" model="room.manager.resource">
+            <field name="name">Roof — AHU / Cooling Tower Plant Room</field>
+            <field name="type_id" ref="rt_plant_room"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_roof'))]"/>
+        </record>
+
+        <!-- Roof HVAC sub-system -->
+        <record id="res_hvac_roof" model="room.manager.resource">
+            <field name="name">HVAC Zone — Roof</field>
+            <field name="type_id" ref="rt_hvac_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_hvac_building'))]"/>
+        </record>
+
+        <!-- Fire on roof -->
+        <record id="res_fire_roof" model="room.manager.resource">
+            <field name="name">Fire System — Roof</field>
+            <field name="type_id" ref="rt_fire_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_fire_building'))]"/>
+        </record>
+
+        <!-- Roof sensors -->
+        <record id="res_roof_weather" model="room.manager.resource">
+            <field name="name">Roof — Weather Station</field>
+            <field name="type_id" ref="rt_sensor_weather"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_roof'))]"/>
+        </record>
+
+        <record id="res_roof_tilt" model="room.manager.resource">
+            <field name="name">Roof — Tilt Sensor (Parapet / Facade)</field>
+            <field name="type_id" ref="rt_sensor_tilt"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_roof')),(4, ref('res_structural_building'))]"/>
+        </record>
+
+        <record id="res_roof_ahu_vibration" model="room.manager.resource">
+            <field name="name">Roof-AHU — Vibration Sensor</field>
+            <field name="type_id" ref="rt_sensor_vibration"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_roof_plant_room')),(4, ref('res_mechanical_building'))]"/>
+        </record>
+
+        <record id="res_roof_ahu_duct_temp_supply" model="room.manager.resource">
+            <field name="name">Roof-AHU — Duct Temp (Supply)</field>
+            <field name="type_id" ref="rt_sensor_duct_temp"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_roof_plant_room')),(4, ref('res_hvac_roof'))]"/>
+        </record>
+
+        <record id="res_roof_ahu_duct_temp_return" model="room.manager.resource">
+            <field name="name">Roof-AHU — Duct Temp (Return)</field>
+            <field name="type_id" ref="rt_sensor_duct_temp"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_roof_plant_room')),(4, ref('res_hvac_roof'))]"/>
+        </record>
+
+        <record id="res_roof_ahu_diff_p" model="room.manager.resource">
+            <field name="name">Roof-AHU — Differential Pressure Sensor</field>
+            <field name="type_id" ref="rt_sensor_diff_pressure"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_roof_plant_room')),(4, ref('res_hvac_roof'))]"/>
+        </record>
+
+        <record id="res_roof_cool_tower_vibration" model="room.manager.resource">
+            <field name="name">Roof-Cooling Tower — Vibration Sensor</field>
+            <field name="type_id" ref="rt_sensor_vibration"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_roof_plant_room')),(4, ref('res_mechanical_building'))]"/>
+        </record>
+
+        <record id="res_roof_cool_tower_pipe_temp" model="room.manager.resource">
+            <field name="name">Roof-Cooling Tower — Pipe Temp Sensor</field>
+            <field name="type_id" ref="rt_sensor_pipe_temp"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_roof_plant_room')),(4, ref('res_mechanical_building'))]"/>
+        </record>
+
+        <record id="res_roof_cool_tower_flow" model="room.manager.resource">
+            <field name="name">Roof-Cooling Tower — Water Flow Meter</field>
+            <field name="type_id" ref="rt_sensor_water_flow"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_roof_plant_room')),(4, ref('res_water_building'))]"/>
+        </record>
+
+        <record id="res_roof_plant_smoke" model="room.manager.resource">
+            <field name="name">Roof-Plant — Smoke Detector</field>
+            <field name="type_id" ref="rt_sensor_smoke"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_roof_plant_room')),(4, ref('res_fire_roof'))]"/>
+        </record>
+
+        <record id="res_roof_plant_heat" model="room.manager.resource">
+            <field name="name">Roof-Plant — Heat Detector</field>
+            <field name="type_id" ref="rt_sensor_heat"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_roof_plant_room')),(4, ref('res_fire_roof'))]"/>
+        </record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════
+             STRUCTURAL MONITORING — FACADE &amp; FOUNDATION
+        ═══════════════════════════════════════════════════════════ -->
+
+        <record id="res_facade_north" model="room.manager.resource">
+            <field name="name">Facade — North</field>
+            <field name="type_id" ref="rt_structural_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_structural_building'))]"/>
+        </record>
+
+        <record id="res_facade_south" model="room.manager.resource">
+            <field name="name">Facade — South</field>
+            <field name="type_id" ref="rt_structural_system"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_structural_building'))]"/>
+        </record>
+
+        <record id="res_facade_north_strain_1" model="room.manager.resource">
+            <field name="name">Facade North — Strain Gauge 1 (Mid)</field>
+            <field name="type_id" ref="rt_sensor_strain"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_facade_north')),(4, ref('res_structural_building'))]"/>
+        </record>
+
+        <record id="res_facade_north_strain_2" model="room.manager.resource">
+            <field name="name">Facade North — Strain Gauge 2 (Top)</field>
+            <field name="type_id" ref="rt_sensor_strain"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_facade_north')),(4, ref('res_structural_building'))]"/>
+        </record>
+
+        <record id="res_facade_north_tilt" model="room.manager.resource">
+            <field name="name">Facade North — Tilt Sensor</field>
+            <field name="type_id" ref="rt_sensor_tilt"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_facade_north')),(4, ref('res_structural_building'))]"/>
+        </record>
+
+        <record id="res_facade_south_strain_1" model="room.manager.resource">
+            <field name="name">Facade South — Strain Gauge 1 (Mid)</field>
+            <field name="type_id" ref="rt_sensor_strain"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_facade_south')),(4, ref('res_structural_building'))]"/>
+        </record>
+
+        <record id="res_facade_south_tilt" model="room.manager.resource">
+            <field name="name">Facade South — Tilt Sensor</field>
+            <field name="type_id" ref="rt_sensor_tilt"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_facade_south')),(4, ref('res_structural_building'))]"/>
+        </record>
+
+        <!-- Foundation sensors -->
+        <record id="res_foundation_strain_1" model="room.manager.resource">
+            <field name="name">Foundation — Strain Gauge (Column A)</field>
+            <field name="type_id" ref="rt_sensor_strain"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_structural_building'))]"/>
+        </record>
+
+        <record id="res_foundation_strain_2" model="room.manager.resource">
+            <field name="name">Foundation — Strain Gauge (Column B)</field>
+            <field name="type_id" ref="rt_sensor_strain"/>
+            <field name="contained_by_resource_ids" eval="[(4, ref('res_structural_building'))]"/>
+        </record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════
+             BMS — link top-level systems under BMS umbrella
+             (uses contains_resource_ids to group all building-level
+             systems under the BMS resource)
+        ═══════════════════════════════════════════════════════════ -->
+
+        <record id="res_bms" model="room.manager.resource">
+            <field name="name">BMS — Meridian Tower</field>
+            <field name="type_id" ref="rt_bms"/>
+            <field name="contains_resource_ids" eval="[
+                (4, ref('res_hvac_building')),
+                (4, ref('res_fire_building')),
+                (4, ref('res_security_building')),
+                (4, ref('res_electrical_building')),
+                (4, ref('res_occupancy_building')),
+                (4, ref('res_structural_building')),
+                (4, ref('res_water_building')),
+                (4, ref('res_mechanical_building')),
+            ]"/>
+        </record>
+
+    </data>
+</odoo>
